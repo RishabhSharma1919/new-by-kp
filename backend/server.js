@@ -4,9 +4,9 @@ import "dotenv/config";
 import connectDB from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoutes.js";
-import productRouter from "./routes/productRoute.js";
+import productRouter from "./routes/productRoutes.js";
 import cartRouter from "./routes/cartRoute.js";
-import orderRouter from "./routes/orderRoute.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 //App Config
 const app = express();
