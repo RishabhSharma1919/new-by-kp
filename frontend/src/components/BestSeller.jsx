@@ -1,16 +1,14 @@
-import React, { useContext, useState } from 'react'
-import {useEffect } from "react";
+import React, { useContext, useState, useEffect, useMemo } from 'react';
 import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
 
 const BestSeller = () => {
   const { products } = useContext(ShopContext);
-  const [bestSeller, setBestSeller] = useState([]);
 
-  useEffect(() => {
-    const bestProducts = products.filter((item) => item.bestSeller);
-    setBestSeller(bestProducts.slice(0, 5));
+  // Memoize the filtering operation for best sellers
+  const bestSeller = useMemo(() => {
+    return products.filter((item) => item.bestSeller).slice(0, 5);
   }, [products]);
 
   return (
@@ -23,10 +21,10 @@ const BestSeller = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6 ">
-        {bestSeller.map((item, i) => (
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+        {bestSeller.map((item) => (
           <ProductItem
-            key={i}
+            key={item._id} // Use _id as the key to avoid using the index
             id={item._id}
             image={item.image}
             name={item.name}

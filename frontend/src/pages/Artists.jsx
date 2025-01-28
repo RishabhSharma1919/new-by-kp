@@ -37,17 +37,22 @@ const Artists = () => {
                 activeSection === index ? "font-bold" : ""
               }`}
               aria-expanded={activeSection === index}
+              aria-controls={`section-${index}`}
             >
               {activeSection === index ? "Hide Products" : "Show Products"}
             </button>
           </div>
 
-          {/* Debug: Add background color and padding */}
-          {activeSection === index && (
-            <div className="mt-4 bg-yellow-200 p-4">
-              {section.component}
-            </div>
-          )}
+          {/* Section Content */}
+          <div
+            id={`section-${index}`}
+            className={`mt-4 bg-yellow-200 p-4 transition-all duration-500 ${
+              activeSection === index ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+            }`}
+            style={{ overflow: "hidden" }}
+          >
+            {activeSection === index && section.component}
+          </div>
         </div>
       ))}
     </div>

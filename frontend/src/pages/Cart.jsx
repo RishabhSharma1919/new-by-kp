@@ -34,6 +34,20 @@ const Cart = () => {
         <Title text1="YOUR" text2="CART" />
       </div>
 
+      {/* Category Cards */}
+      <div className="flex space-x-6 overflow-x-auto pb-4">
+        <div className="min-w-[120px] bg-gold p-4 rounded-lg text-center">
+          <p className="font-medium text-xl">Art</p>
+        </div>
+        <div className="min-w-[120px] bg-silver p-4 rounded-lg text-center">
+          <p className="font-medium text-xl">Devotional</p>
+        </div>
+        <div className="min-w-[120px] bg-black text-white p-4 rounded-lg text-center">
+          <p className="font-medium text-xl">Anime</p>
+        </div>
+      </div>
+
+      {/* Cart Items */}
       <div>
         {cartData.map((item) => {
           const productsData = products.find(

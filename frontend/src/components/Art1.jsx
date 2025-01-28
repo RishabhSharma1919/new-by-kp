@@ -11,8 +11,9 @@ const Art1 = () => {
 
   useEffect(() => {
     if (products.length > 0) {
-      const bestProducts = products.filter((item) => item.art1);
-      setArt1(bestProducts.slice(0, 5));
+      const bestProducts = products.filter((item) => item.art1); // Correct filtering condition
+      setArt1(bestProducts.slice(0, 5)); // Corrected to update `art1`
+      
     }
   }, [products]);
 

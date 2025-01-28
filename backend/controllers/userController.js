@@ -1,5 +1,5 @@
 import validator from "validator";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs"; // Use bcryptjs
 import jwt from "jsonwebtoken";
 
 import userModel from "../models/userModel.js";
@@ -7,17 +7,18 @@ import userModel from "../models/userModel.js";
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
 };
-//Route for user login
+
+// Route for user login
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.json({ success: false, message: "User does not exists" });
+      return res.json({ success: false, message: "User does not exist" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password); // bcryptjs is used here
 
     if (isMatch) {
       const token = createToken(user._id);
@@ -31,18 +32,18 @@ export const loginUser = async (req, res) => {
   }
 };
 
-//Route for user register
+// Route for user register
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // checking user already exist or not
+    // checking user already exists or not
     const exists = await userModel.findOne({ email });
     if (exists) {
       return res.json({ success: false, message: "User already exists" });
     }
 
-    //validating email formate and strong password
+    // validating email format and strong password
     if (!validator.isEmail(email)) {
       return res.json({
         success: false,
@@ -57,9 +58,9 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    //hashing user password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // hashing user password
+    const salt = await bcrypt.genSalt(10); // bcryptjs is used here
+    const hashedPassword = await bcrypt.hash(password, salt); // bcryptjs is used here
 
     const newUser = new userModel({ name, email, password: hashedPassword });
 
@@ -74,7 +75,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
-//Route for Admin login
+// Route for Admin login
 export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;

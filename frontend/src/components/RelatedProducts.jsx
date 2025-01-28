@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
@@ -9,33 +9,33 @@ const RelatedProduct = ({ category, subCategory }) => {
 
   useEffect(() => {
     if (products.length > 0) {
-      let productCopy = products.slice();
-
-      productCopy = productCopy.filter((item) => category === item.category);
-      productCopy = productCopy.filter(
-        (item) => subCategory === item.subCategory
+      const filteredProducts = products.filter(
+        (item) => item.category === category && item.subCategory === subCategory
       );
-
-      setRelated(productCopy.slice(0, 5));
+      setRelated(filteredProducts.slice(0, 5));
     }
-  }, [products]);
+  }, [products, category, subCategory]);  // Re-run effect when category or subCategory changes
 
   return (
     <div className="my-24">
       <div className="text-center text-3xl py-2">
-        <Title text1={"RELATED"} text2={"PRODUCTS"} />
+        <Title text1="RELATED" text2={`${category} - ${subCategory}`} />
       </div>
 
       <div className="grid grid-col-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 gap-y-6">
-        {related.map((item, i) => (
-          <ProductItem
-            key={i}
-            id={item._id}
-            image={item.image}
-            name={item.name}
-            price={item.price}
-          />
-        ))}
+        {related.length > 0 ? (
+          related.map((item) => (
+            <ProductItem
+              key={item._id}
+              id={item._id}
+              image={item.image}
+              name={item.name}
+              price={item.price}
+            />
+          ))
+        ) : (
+          <div className="col-span-full text-center">No related products found.</div>
+        )}
       </div>
     </div>
   );

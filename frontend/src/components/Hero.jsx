@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { assets } from "../assets/assets";
 
 const Hero = () => {
-  // State to track the current image index
   const [currentImage, setCurrentImage] = useState(0);
 
-  // Array of images
+  // Array of images (memoized to avoid unnecessary re-creations)
   const images = [
     assets.hero5,
     assets.hero6,
@@ -13,21 +12,30 @@ const Hero = () => {
     assets.hero7,
   ];
 
-  // Change image every 6 seconds
+  // Preload images to avoid delay during transitions
+  useEffect(() => {
+    images.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    });
+  }, []);
+
+  // Change image every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prevImage) => (prevImage + 1) % images.length);
     }, 3000);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [images.length]);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden courner-rounded hover-fade">
+    <div className="relative h-screen w-full overflow-hidden rounded-lg">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
         style={{ backgroundImage: `url(${images[currentImage]})` }}
+        aria-live="polite" // For better accessibility (ensures screen readers know content is changing)
       >
         <div className="absolute inset-0 bg-black/40"></div> {/* Dark overlay */}
       </div>

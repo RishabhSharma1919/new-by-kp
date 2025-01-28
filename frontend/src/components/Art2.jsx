@@ -7,9 +7,10 @@ import ProductItem from "./ProductItem";
 const Art2 = () => {
   const { products } = useContext(ShopContext);
   const [art2, setArt2] = useState([]);
+  const navigate = useNavigate(); // Define navigate function
 
   useEffect(() => {
-    const bestProducts = products.filter((item) => item.art1);
+    const bestProducts = products.filter((item) => item.art2); // Updated to filter based on 'art2'
     setArt1(bestProducts.slice(0, 5));
   }, [products]);
   const handleOnClick = () => {
