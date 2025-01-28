@@ -31,25 +31,27 @@ const Cart = () => {
   return (
     <div className="border-t pt-14">
       <div className="text-2xl mb-3">
-        <Title text1={"YOUR"} text2={"CART"} />
+        <Title text1="YOUR" text2="CART" />
       </div>
 
       <div>
-        {cartData.map((item, i) => {
+        {cartData.map((item) => {
           const productsData = products.find(
             (product) => product._id === item._id
           );
 
+          if (!productsData) return null; // Handle missing product gracefully
+
           return (
             <div
               className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
-              key={i}
+              key={`${item._id}-${item.size}`}
             >
               <div className="flex items-start gap-6">
                 <img
                   src={productsData.image[0]}
                   className="w-16 sm:w-20"
-                  alt=""
+                  alt={productsData.name}
                 />
                 <div>
                   <p className="text-xs sm:text-lg font-medium">
@@ -60,7 +62,7 @@ const Cart = () => {
                       {currency}
                       {productsData.price}
                     </p>
-                    <p className="px-2 sm:px-3 sm:py-1 border bg-stale-50">
+                    <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50">
                       {item.size}
                     </p>
                   </div>
@@ -73,19 +75,13 @@ const Cart = () => {
                 min={1}
                 defaultValue={item.quantity}
                 onChange={(e) =>
-                  e.target.value === "" || e.target.value === "0"
-                    ? null
-                    : updateQuantity(
-                        item._id,
-                        item.size,
-                        Number(e.target.value)
-                      )
+                  updateQuantity(item._id, item.size, Number(e.target.value) || 1)
                 }
               />
               <img
                 src={assets.bin_icon}
                 className="w-4 mr-4 sm:w-5 cursor-pointer"
-                alt=""
+                alt="Remove"
                 onClick={() => updateQuantity(item._id, item.size, 0)}
               />
             </div>

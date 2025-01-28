@@ -1,3 +1,4 @@
+import React from 'react'
 import { useContext, useEffect } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { useSearchParams } from "react-router-dom";

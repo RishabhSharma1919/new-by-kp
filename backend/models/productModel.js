@@ -9,6 +9,11 @@ const productSchema = new mongoose.Schema({
     subCategory:{type:String,required:true},
     sizes:{type:Array,required:true},
     bestSeller:{type:Number,required:true},
+    art1:{type:Number,required:true},
+    art2:{type:Number,required:true},
+    art3:{type:Number,required:true},
+    art4:{type:Number,required:true},
+    art5:{type:Number,required:true},
     date:{type:Number,required:true}
 }) 
 const productModel =mongoose.models.product|| mongoose.model("product",productSchema)

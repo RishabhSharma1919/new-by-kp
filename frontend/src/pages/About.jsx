@@ -12,29 +12,23 @@ const About = () => {
 
       <div className="my-10 flex flex-col md:flex-row gap-16">
         <img
-          src={assets.about_img}
+          src={assets.aboutus2}
           className="w-full md:max-w-[450px]"
           alt=""
         />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-600">
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor
-            quidem culpa sapiente necessitatibus similique, quaerat nisi fugiat
-            at officiis tempora laboriosam ipsam iusto? Veritatis illum ipsum
-            nihil delectus deserunt voluptates, officia nemo nulla aspernatur
-            laboriosam.
+          Welcome to ARTNART, where creativity meets craftsmanship. We are passionate about curating and delivering the finest collection of artistic pieces that celebrate the beauty and diversity of art.
+
           </p>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta a
-            doloremque vitae consectetur, quas earum voluptatum nobis itaque
-            veritatis, ut ipsam eius sed ab fugiat.
+          At the heart of our journey lies a deep appreciation for the traditional and contemporary art forms that inspire connection, emotion, and individuality. Our platform serves as a bridge between skilled artists and those who admire and cherish their work, offering a space where art finds its rightful home.
+
           </p>
 
           <b className="text-gray-800">Our Mission</b>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit
-            eius officia fugit sequi libero possimus temporibus commodi
-            doloremque omnis saepe.
+          Our mission is to make art accessible to everyone while supporting talented artists from across the globe. We strive to create a space where creativity flourishes, enabling artists to share their stories and craft with the world.
           </p>
         </div>
       </div>

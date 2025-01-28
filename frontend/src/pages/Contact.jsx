@@ -1,3 +1,4 @@
+import React from 'react'
 import { assets } from "../assets/assets";
 import NewsletterBox from "../components/NewsletterBox";
 import Title from "../components/Title";
@@ -18,14 +19,14 @@ const Contact = () => {
         <div className="flex flex-col justify-center items-start gap-6">
           <p className="font-semibold text-xl text-gray-600">Our Store</p>
           <p className="text-gray-500">
-            54709 Willms Station <br /> Suite 350, Washington, USA
+            city ceter <br /> gwalior , M.P ,INDIA
           </p>
           <p className="text-gray-500">
             {" "}
-            Tel: (415) 666-0132 <br /> Email: admin@forever.com{" "}
+            Ph: 9098007271 <br /> Email: admin@art.com{" "}
           </p>
           <p className="font-semibold text-xl text-gray-600">
-            Careers at Forever
+            Careers at art
           </p>
           <p className="text-gray-500">
             Learn more about our teams and job openings.

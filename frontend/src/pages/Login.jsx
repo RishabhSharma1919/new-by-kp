@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";

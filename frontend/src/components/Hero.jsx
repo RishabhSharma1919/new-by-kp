@@ -1,26 +1,51 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { assets } from "../assets/assets";
 
 const Hero = () => {
+  // State to track the current image index
+  const [currentImage, setCurrentImage] = useState(0);
+
+  // Array of images
+  const images = [
+    assets.hero5,
+    assets.hero6,
+    assets.hero2,
+    assets.hero7,
+  ];
+
+  // Change image every 6 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="flex flex-col sm:flex-row border border-gray-400">
-      <div className="w-full sn:w-1/2 flex items-center justify-center py-10 sm:py-0">
-        <div className="text-[#414141]">
-          <div className="flex items-center gap-2">
-            <p className="w-2 md:w-11 h-[2px] bg-[#414141]"></p>
-            <p className="font-medium text-sm md:text-base">OUR BESTSELLERS</p>
-          </div>
-          <h1 className="text-3xl sm:px-3 lg-text-5xl leading-relaxed prata-regular">
+    <div className="relative h-screen w-full overflow-hidden courner-rounded hover-fade">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
+        style={{ backgroundImage: `url(${images[currentImage]})` }}
+      >
+        <div className="absolute inset-0 bg-black/40"></div> {/* Dark overlay */}
+      </div>
+
+      {/* Text Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
+        <div className="animate-fadeInUp">
+          <p className="text-sm sm:text-base tracking-widest">OUR BESTSELLERS</p>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold prata-regular mt-4">
             Latest Arrivals
           </h1>
-          <div className="flex items-center gap-2">
-            <p className="font-semibold text-sm md:text-base">SHOT NOW</p>
-            <p className="w-8 md:w-11 h-[1px] bg-[#414141]"></p>
+          <div className="mt-4">
+            <button className="px-6 py-3 bg-white text-black font-semibold rounded-lg shadow-md hover:bg-gray-200 transition">
+              SHOP NOW
+            </button>
           </div>
         </div>
       </div>
-      {/* HERO RiGHT SIDE */}
-      <img src={assets.hero_img} className="w-full sm:w-1/2" alt="" />{" "}
     </div>
   );
 };

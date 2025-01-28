@@ -12,6 +12,13 @@ export const addProduct = async (req, res) => {
       subCategory,
       sizes,
       bestSeller,
+      art1,
+      art2,
+      art3,
+      art4,
+      art5,
+
+
     } = req.body;
 
     const image1 = req.files.image1 && req.files.image1[0];
@@ -39,6 +46,11 @@ export const addProduct = async (req, res) => {
       price: Number(price),
       subCategory,
       bestSeller: bestSeller === "true" ? true : false,
+      art1: art1 === "true" ? true : false,
+      art2: art2 === "true" ? true : false,
+      art3: art3 === "true" ? true : false,
+      art4: art4 === "true" ? true : false,
+      art5: art5 === "true" ? true : false,
       sizes: JSON.parse(sizes),
       image: imagesUrl,
       date: Date.now(),

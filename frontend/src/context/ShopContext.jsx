@@ -14,10 +14,10 @@ const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState("");
-
+  const [description1, setDescription1] = useState("");
   const navigate = useNavigate();
 
-  const addToCart = async (itemId, size) => {
+  const addToCart = async (itemId, size, description1) => {
     if (!size) {
       toast.error("Select product size!");
       return;
@@ -33,7 +33,6 @@ const ShopContextProvider = (props) => {
       }
     } else {
       cartData[itemId] = {};
-
       cartData[itemId][size] = 1;
     }
 
@@ -43,7 +42,7 @@ const ShopContextProvider = (props) => {
       try {
         await axios.post(
           backendUrl + "/api/cart/add",
-          { itemId, size },
+          { itemId, size, description1 },
           { headers: { token } }
         );
       } catch (e) {
@@ -64,7 +63,6 @@ const ShopContextProvider = (props) => {
         } catch (e) {}
       }
     }
-
     return totalCount;
   };
 
@@ -93,7 +91,6 @@ const ShopContextProvider = (props) => {
     let totalAmount = 0;
     for (const items in cartItems) {
       let itemInfo = products.find((product) => product._id === items);
-
       for (const item in cartItems[items]) {
         try {
           if (cartItems[items][item] > 0) {
@@ -102,14 +99,12 @@ const ShopContextProvider = (props) => {
         } catch (e) {}
       }
     }
-
     return totalAmount;
   };
 
   const getProductsData = async () => {
     try {
       const response = await axios.get(backendUrl + "/api/product/list");
-
       if (response.data.success) {
         setProducts(response.data.products);
       } else {
@@ -128,7 +123,6 @@ const ShopContextProvider = (props) => {
         {},
         { headers: { token } }
       );
-
       if (res.data.success) {
         setCartItems(res.data.cartData);
       }
@@ -167,6 +161,8 @@ const ShopContextProvider = (props) => {
     token,
     setToken,
     setCartItems,
+    description1,
+    setDescription1,
   };
 
   return (
