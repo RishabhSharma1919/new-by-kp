@@ -12,7 +12,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // PLACING ORDERS USING COD
 export const placeOrder = async (req, res) => {
   try {
-    const { userId, items, amount, address } = req.body;
+    console.log(req.user);
+    
+    const userId = req.user?.id; // ✅ Get userId from auth middleware
+
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User ID is missing" });
+    }
+
+    const { items, amount, address } = req.body;
 
     const orderData = {
       userId,
@@ -32,7 +42,7 @@ export const placeOrder = async (req, res) => {
     res.json({ success: true, message: "Order Placed" });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -128,11 +138,14 @@ export const allOrders = async (req, res) => {
 //USER ORDERS DATA FOR FRONTEND
 export const userOrders = async (req, res) => {
   try {
-    const { userId } = req.body;
+
+    const userId = req.user.id;
+
+    console.log(userId);
 
     const orders = await orderModel.find({ userId });
 
-    res.json({ success: true, orders });
+    res.json({ success: true, orders, userId});
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });

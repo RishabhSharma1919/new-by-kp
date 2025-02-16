@@ -14,8 +14,8 @@ const Art5 = () => {
     setArt5(bestProducts.slice(0, 5));
   }, [products]);
 
-  const handleOnClick = () => {
-    navigate('/artisiti'); // Fixed typo in route ('artisiti' -> 'artists')
+  const handleOnClick = (id) => {
+    navigate(`/Artisitsi/${id}`);
   };
 
   return (
@@ -32,12 +32,12 @@ const Art5 = () => {
         {art5.map((item) => (
           <ProductItem
             key={item._id} // Using unique key (_id)
+            log
             id={item._id}
             image={item.image}
             name={item.name}
             price={item.price}
-            onClick={handleOnClick}  // Passing the handleOnClick function
-          />
+            onClick={() => handleOnClick(item._id)}          />
         ))}
       </div>
     </div>

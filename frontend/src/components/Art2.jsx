@@ -9,6 +9,9 @@ const Art2 = () => {
   const [art2, setArt2] = useState([]);
   const navigate = useNavigate(); // Define navigate function
 
+  if (art2.length === 0) {
+    return <div>Loading...</div>; // Shows loading if no data is available
+  }
   useEffect(() => {
     const bestProducts = products.filter((item) => item.art2); // Updated to filter based on 'art2'
     setArt1(bestProducts.slice(0, 5));

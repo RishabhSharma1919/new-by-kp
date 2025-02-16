@@ -8,28 +8,27 @@ import productRouter from "./routes/productRoutes.js";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoutes.js";
 
-//App Config
 const app = express();
 const port = process.env.PORT || 4000;
+
 connectDB();
 connectCloudinary();
-//Middlewares
-app.use(express.json());
-app.use(cors());
 
-//API endpoints
+app.use(cors());
+app.use(express.json()); // ✅ Parse JSON
+app.use(express.urlencoded({ extended: true })); // ✅ Parse form data
+
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 
+
+
 app.get("/", (req, res) => {
-  res.send("API WORKING");
+  res.send("🚀 API WORKING");
 });
 
 app.listen(port, () => {
-  console.log(`Server started on http://localhost:${port} ❤️`);
+  console.log(`🚀 Server started on http://localhost:${port} ❤️`);
 });
-
-// smimtiaz58
-// YgDk3SE4kqmRIwjt

@@ -1,15 +1,32 @@
+// import express from "express";
+// import {
+//   addToCart,
+//   getUserCart,
+//   updateCart,
+// } from "../controllers/cartController.js";
+// import authUser from "../middleware/auth.js";
+
+// const cartRouter = express.Router();
+
+// cartRouter.get("/get", authUser, getUserCart);
+// cartRouter.post("/add", authUser, addToCart);
+// cartRouter.post("/update", authUser, updateCart);
+
+// export default cartRouter;
+
 import express from "express";
-import {
-  addToCart,
-  getUserCart,
-  updateCart,
-} from "../controllers/cartController.js";
-import authUser from "../middleware/auth.js";
+import { addToCart, getUserCart, updateCart } from "../controllers/cartController.js";
+import authUser from "../middleware/auth.js"; // Middleware for authentication
 
 const cartRouter = express.Router();
 
-cartRouter.post("/get", authUser, getUserCart);
+// Get user cart (GET request with authentication)
+cartRouter.get("/get", authUser, getUserCart);
+
+// Add item to cart (POST request)
 cartRouter.post("/add", authUser, addToCart);
-cartRouter.post("/update", authUser, updateCart);
+
+// Update cart (PUT request)
+cartRouter.put("/update", authUser, updateCart);
 
 export default cartRouter;

@@ -43,15 +43,15 @@ const Collection = () => {
       );
     }
 
-    // if (subCategory.length > 0) {
-    //   productsCopy = productsCopy.filter((item) =>
-    //     subCategory.includes(item.subCategory)
-    //   );
-    // }
-
+    
     setFilterProducts(productsCopy);
   };
-
+  
+  // if (subCategory.length > 0) {
+  //   productsCopy = productsCopy.filter((item) =>
+  //     subCategory.includes(item.subCategory)
+  //   );
+  // }
   const sortProduct = () => {
     let fpCopy = filterProducts.slice();
 
@@ -167,5 +167,4 @@ const Collection = () => {
 };
 
 export default Collection;
-//i want to add card of golden silver and black royal color  cards  in ehich our content in the categories as art ,devotional ,anime  can be  come under it means these cards remain fixed when we slide the content inside it horizontallyhere 
 

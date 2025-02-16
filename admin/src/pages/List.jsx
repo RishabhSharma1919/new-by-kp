@@ -25,7 +25,7 @@ const List = ({ token }) => {
       const response = await axios.post(
         backendUrl + "/api/product/remove",
         { id },
-        { headers: { token } }
+        { headers: { Authorization: `Bearer ${token}` }}
       );
 
       if (response.data.success) {
@@ -71,7 +71,7 @@ const List = ({ token }) => {
               {currency}
               {item.price}
             </p>
-            <p
+            <p   
               onClick={() => removeProduct(item._id)}
               className="text-right md:text-center cursor-pointer text-lg"
             >

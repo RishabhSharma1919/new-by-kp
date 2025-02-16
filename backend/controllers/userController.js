@@ -4,14 +4,17 @@ import jwt from "jsonwebtoken";
 
 import userModel from "../models/userModel.js";
 
+let token = null; // Define a global variable to store the token
+
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET);
+  token = jwt.sign({ id }, process.env.JWT_SECRET); // Store the token in the variable
+  return token;
 };
 
 // Route for user login
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body;    
 
     const user = await userModel.findOne({ email });
     if (!user) {
@@ -21,7 +24,8 @@ export const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password); // bcryptjs is used here
 
     if (isMatch) {
-      const token = createToken(user._id);
+      createToken(user._id); // Token is now stored in the global variable
+
       res.json({ success: true, token });
     } else {
       return res.json({ success: false, message: "Invalid Credentials" });
@@ -36,6 +40,7 @@ export const loginUser = async (req, res) => {
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    console.log(name);
 
     // checking user already exists or not
     const exists = await userModel.findOne({ email });
@@ -66,7 +71,7 @@ export const registerUser = async (req, res) => {
 
     const user = await newUser.save();
 
-    const token = createToken(user._id);
+    createToken(user._id); // Token is now stored in the global variable
 
     res.json({ success: true, token });
   } catch (e) {
@@ -84,7 +89,7 @@ export const adminLogin = async (req, res) => {
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASSWORD
     ) {
-      const token = jwt.sign(email + password, process.env.JWT_SECRET);
+      token = jwt.sign(email + password, process.env.JWT_SECRET); // Store the token
       res.json({ success: true, token });
     } else {
       res.json({

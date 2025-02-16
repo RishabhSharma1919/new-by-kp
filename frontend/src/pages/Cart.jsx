@@ -13,17 +13,32 @@ const Cart = () => {
   useEffect(() => {
     if (products.length > 0) {
       const tempData = [];
-      for (const items in cartItems) {
-        for (const item in cartItems[items]) {
-          if (cartItems[items][item] > 0) {
-            tempData.push({
-              _id: items,
-              size: item,
-              quantity: cartItems[items][item],
-            });
-          }
+      // for (const items in cartItems) {
+      //   for (const item in cartItems[items]) {
+      //     if (cartItems[items][item] > 0) {
+      //       tempData.push({
+      //         _id: items,
+      //         size: item,
+      //         quantity: cartItems[items][item],
+      //       });
+      //     }
+      //   }
+      // }
+
+      const cart = cartItems?.items;
+
+      if (cart.length > 0) {
+        for (let i = 0; i < cart?.length; i++) {
+          const element = cart[i];
+          console.log("======", element);
+          tempData.push({
+            _id: element.itemId,
+            size: element.size,
+            quantity: element?.quantity,
+          });
         }
       }
+      
       setCartData(tempData);
     }
   }, [cartItems, products]);
@@ -89,7 +104,11 @@ const Cart = () => {
                 min={1}
                 defaultValue={item.quantity}
                 onChange={(e) =>
-                  updateQuantity(item._id, item.size, Number(e.target.value) || 1)
+                  updateQuantity(
+                    item._id,
+                    item.size,
+                    Number(e.target.value) || 1
+                  )
                 }
               />
               <img

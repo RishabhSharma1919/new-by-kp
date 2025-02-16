@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 import { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
@@ -7,41 +7,60 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Orders = () => {
-  const { backendUrl, token, currency } = useContext(ShopContext);
+  const { token, currency } = useContext(ShopContext);
 
   const [orderData, setOrderData] = useState([]);
-
   const loadOrderData = async () => {
     try {
       if (!token) {
-        return null;
+        return;
       }
 
-      const res = await axios.post(
-        backendUrl + "/api/order/userorders",
-        {},
-        { headers: { token } }
+      // Fetch user details to include userId in request
+      const userRes = await axios.get(
+        "http://localhost:4000/api/order/userorders",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
 
-      if (res.data.success) {
+      
+      console.log("===",userRes);
+      const userId = userRes.data?.userId; // Extract user ID from response
+
+      if (!userId) {
+        throw new Error("User ID not found. Please log in again.");
+      }
+
+      // // Place order with userId included
+      // const res = await axios.post(
+      //   `http://localhost:4000/api/order/place`,
+      //   { userId, items: orderData }, // ✅ Include userId
+      //   { headers: { Authorization: `Bearer ${token}` } }
+      // );
+
+      if (userRes.data.success) {
+
         let allOrdersItem = [];
 
-        res.data.orders.map((order) => {
-          order.items.map((item) => {
-            item["status"] = order.status;
-            item["payment"] = order.payment;
-            item["paymentMethod"] = order.paymentMethod;
-            item["date"] = order.date;
-
-            allOrdersItem.push(item);
+        userRes.data.orders.forEach((order) => {
+          order.items.forEach((item) => {
+            allOrdersItem.push({
+              ...item,
+              status: order.status,
+              payment: order.payment,
+              paymentMethod: order.paymentMethod,
+              date: order.date,
+            });
           });
         });
-
+        
+        // console.log("=======",allOrdersItem);
         setOrderData(allOrdersItem.reverse());
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || "Failed to place order");
     }
   };
 

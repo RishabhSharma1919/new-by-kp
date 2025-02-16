@@ -21,9 +21,9 @@ const Art1 = () => {
     navigate('/artisiti');
   };
 
-  // if (art1.length === 0) {
-  //   return <div>Loading...</div>; // Shows loading if no data is available
-  // }
+  if (art1.length === 0) {
+    return <div>Loading...</div>; // Shows loading if no data is available
+  }
 
   return (
     <div className="my-10">

@@ -1,28 +1,30 @@
 import express from "express";
-import {
-  addProduct,
-  listProduct,
-  removeProduct,
-  singleProduct,
-} from "../controllers/productController.js";
-import upload from "../middleware/multer.js";
-import adminAuth from "../middleware/adminAuth.js";
+import multer from "multer";
+import path from "path";
+import { addProduct, listProduct, removeProduct, singleProduct } from "../controllers/productController.js";
 
-const productRouter = express.Router();
+const router = express.Router();
 
-productRouter.post(
-  "/add",
-  adminAuth,
-  upload.fields([
-    { name: "image1", maxCount: 1 },
-    { name: "image2", maxCount: 1 },
-    { name: "image3", maxCount: 1 },
-    { name: "image4", maxCount: 1 },
-  ]),
-  addProduct
-);
-productRouter.post("/single", singleProduct);
-productRouter.post("/remove", adminAuth, removeProduct);
-productRouter.get("/list", listProduct);
+// Configure multer storage
+const storage = multer.diskStorage({
+  destination: "uploads/", // Ensure this directory exists
+  filename: (req, file, cb) => {
+    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+  },
+});
 
-export default productRouter;
+const upload = multer({ storage });
+
+// ✅ Route to add a product (Accept up to 4 images)
+router.post("/add", upload.array("images", 4), addProduct);
+
+// ✅ Route to list all products
+router.get("/list", listProduct);
+
+// ✅ Route to remove a product
+router.delete("/remove", removeProduct);
+
+// ✅ Route to get a single product
+router.get("/single", singleProduct);
+
+export default router;
