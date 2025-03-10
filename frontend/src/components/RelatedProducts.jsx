@@ -13,6 +13,7 @@ const RelatedProduct = ({ category, subCategory }) => {
         (item) => item.category === category && item.subCategory === subCategory
       );
       setRelated(filteredProducts.slice(0, 5));
+      console.log("====",filteredProducts);
     }
   }, [products, category, subCategory]);  // Re-run effect when category or subCategory changes
 
@@ -28,7 +29,7 @@ const RelatedProduct = ({ category, subCategory }) => {
             <ProductItem
               key={item._id}
               id={item._id}
-              image={item.image}
+              images={item.images}
               name={item.name}
               price={item.price}
             />

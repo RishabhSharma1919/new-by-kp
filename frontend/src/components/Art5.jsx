@@ -1,45 +1,35 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate
+import React, { useContext, useMemo } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
 
 const Art5 = () => {
   const { products } = useContext(ShopContext);
-  const [art5, setArt5] = useState([]);
-  const navigate = useNavigate(); // Define navigate function
 
-  useEffect(() => {
-    const bestProducts = products.filter((item) => item.art5);
-    setArt5(bestProducts.slice(0, 5));
-  }, [products]);
+  const art5Products = useMemo(() => 
+    (products || []).filter(item => item.art5).slice(0, 5),
+  [products]);
 
-  const handleOnClick = (id) => {
-    navigate(`/Artisitsi/${id}`);
-  };
+  console.log("inside Art5", art5Products);
 
   return (
     <div className="my-10">
       <div className="text-center text-3xl py-8">
-        <Title text1={"ART"} text2={"COLLECTION"} />
+        <Title text1={"ABSTRACT"} text2={"CREATIONS"} />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
-          officiis eaque sint, fugit quo laborum.
+          Dive into the world of imagination with abstract art.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-        {art5.map((item) => (
-          <ProductItem
-            key={item._id} // Using unique key (_id)
-            log
-            id={item._id}
-            image={item.image}
-            name={item.name}
-            price={item.price}
-            onClick={() => handleOnClick(item._id)}          />
-        ))}
-      </div>
+      {art5Products.length === 0 ? (
+        <p className="text-center text-gray-500">No abstract creations available.</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+          {art5Products.map((item) => (
+            <ProductItem key={item._id} id={item._id} images={item.images} name={item.name} price={item.price} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

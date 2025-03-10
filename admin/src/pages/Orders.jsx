@@ -12,14 +12,15 @@ const Order = ({ token }) => {
     if (!token) {
       return null;
     }
-
+  //console.log()
     try {
       const res = await axios.post(
-        backendUrl + "/api/order/list",
+        
+        "http://localhost:4000/api/order/list", // Removed extra space
         {},
-        { headers: { Authorization: `Bearer ${token}` }}
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
+      console.log(res);
       if (res.data.success) {
         setOrders(res.data.orders.reverse());
       } else {
@@ -30,7 +31,8 @@ const Order = ({ token }) => {
       toast.error(error.message);
     }
   };
-
+  
+//console.log(res);
   const statusHandler = async (e, orderId) => {
     try {
       const res = await axios.post(

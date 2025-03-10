@@ -22,10 +22,11 @@ export const placeOrder = async (req, res) => {
         .json({ success: false, message: "User ID is missing" });
     }
 
-    const { items, amount, address } = req.body;
+    const { items, itemi,amount, address } = req.body;
 
     const orderData = {
       userId,
+    itemi,
       items,
       address,
       amount,
@@ -33,7 +34,7 @@ export const placeOrder = async (req, res) => {
       payment: false,
       date: Date.now(),
     };
-
+console.log("inside ordercontroller",orderData);
     const newOrder = new orderModel(orderData);
     await newOrder.save();
 
@@ -49,13 +50,14 @@ export const placeOrder = async (req, res) => {
 // PLACING ORDERS USING STRIPE
 export const placeOrderStripe = async (req, res) => {
   try {
-    const { userId, items, amount, address } = req.body;
+    const { userId,itemi, items, amount, address } = req.body;
 
     const { origin } = req.headers;
 
     const orderData = {
       userId,
       items,
+     itemi,
       address,
       amount,
       paymentMethod: "Stripe",
@@ -109,7 +111,7 @@ export const verifyStripe = async (req, res) => {
   try {
     if (success === "true") {
       await orderModel.findByIdAndUpdate(orderId, { payment: true });
-      await userModel.findByIdAndUpdate(userId, { cartData: {} });
+      console.log("order id",orderId);
       res.json({ success: true });
     } else {
       await orderModel.findByIdAndDelete(orderId);
@@ -119,6 +121,8 @@ export const verifyStripe = async (req, res) => {
     console.log(error);
     res.json({ success: false, message: error.message });
   }
+  await userModel.findByIdAndUpdate(userId, { cartData: {} });
+
 };
 
 // PLACING ORDERS USING RAZORPAY
@@ -129,6 +133,7 @@ export const allOrders = async (req, res) => {
   try {
     const orders = await orderModel.find();
     res.json({ success: true, orders });
+    console.log(orders);
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });

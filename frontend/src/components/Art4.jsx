@@ -1,45 +1,35 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate
+import React, { useContext, useMemo } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
 
 const Art4 = () => {
   const { products } = useContext(ShopContext);
-  const [art4, setArt4] = useState([]);
-  const navigate = useNavigate(); // Define navigate function
 
-  useEffect(() => {
-    const bestProducts = products.filter((item) => item.art4);
-    setArt4(bestProducts.slice(0, 5));
-  }, [products]);
+  const art4Products = useMemo(() => 
+    (products || []).filter(item => item.art4).slice(0, 5),
+  [products]);
 
-  const handleOnClick = () => {
-    navigate('/artisiti'); // Fixed typo in route ('artisiti' -> 'artists')
-  };
+  console.log("inside Art4", art4Products);
 
   return (
     <div className="my-10">
       <div className="text-center text-3xl py-8">
-        <Title text1={"ART"} text2={"COLLECTION"} />
+        <Title text1={"CLASSIC"} text2={"MASTERPIECES"} />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
-          officiis eaque sint, fugit quo laborum.
+          Traditional artworks that stand the test of time.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-        {art4.map((item) => (
-          <ProductItem
-            key={item._id} // Using unique key (_id)
-            id={item._id}
-            image={item.image}
-            name={item.name}
-            price={item.price}
-            onClick={handleOnClick}  // Passing the handleOnClick function
-          />
-        ))}
-      </div>
+      {art4Products.length === 0 ? (
+        <p className="text-center text-gray-500">No classic masterpieces available.</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+          {art4Products.map((item) => (
+            <ProductItem key={item._id} id={item._id} images={item.images} name={item.name} price={item.price} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

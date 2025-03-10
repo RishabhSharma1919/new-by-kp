@@ -9,14 +9,17 @@ import Art1 from '../components/Art1';
 const Home = () => {
   return (
     <div>
-      <Hero/>
-      <LatestCollection/>
-      <BestSeller/>
-      <Art1/>
-      <OurPolicy/>
-      <NewsletterBox/>
+      <Hero />
+      <div className="bg-[#F9F9F9]"> {/* Ensures background applies */}
+        <LatestCollection />
+      </div>
+      <BestSeller />
+      <Art1 />
+      <OurPolicy />
+      <NewsletterBox />
     </div>
-  )
-}
+  );
+};
+
 
 export default Home

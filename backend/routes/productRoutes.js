@@ -1,30 +1,32 @@
 import express from "express";
 import multer from "multer";
-import path from "path";
-import { addProduct, listProduct, removeProduct, singleProduct } from "../controllers/productController.js";
+import {
+  addProduct,
+  listProduct,
+  removeProduct,
+  singleProduct,
+} from "../controllers/productController.js";
+
 
 const router = express.Router();
 
-// Configure multer storage
-const storage = multer.diskStorage({
-  destination: "uploads/", // Ensure this directory exists
-  filename: (req, file, cb) => {
-    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
-  },
-});
+// ✅ Multer setup for memory storage (Buffers instead of file paths)
+const storage = multer.memoryStorage();
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+}).fields([
+  { name: "image1", maxCount: 1 },
+  { name: "image2", maxCount: 1 },
+  { name: "image3", maxCount: 1 },
+  { name: "image4", maxCount: 1 },
+]);
 
-// ✅ Route to add a product (Accept up to 4 images)
-router.post("/add", upload.array("images", 4), addProduct);
-
-// ✅ Route to list all products
+// ✅ Product Route
+router.post("/add", upload, addProduct);
 router.get("/list", listProduct);
-
-// ✅ Route to remove a product
-router.delete("/remove", removeProduct);
-
-// ✅ Route to get a single product
-router.get("/single", singleProduct);
+router.get("/single/:productId", singleProduct);
+router.delete("/remove/:id", removeProduct);
 
 export default router;

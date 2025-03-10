@@ -1,52 +1,44 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
 
 const Art1 = () => {
   const { products } = useContext(ShopContext);
-  const [art1, setArt1] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (products.length > 0) {
-      const bestProducts = products.filter((item) => item.art1); // Correct filtering condition
-      setArt1(bestProducts.slice(0, 5)); // Corrected to update `art1`
-      
-    }
-  }, [products]);
+  // Memoized filtering for art1 products
+  const art1Products = useMemo(() => 
+    (products || []).filter(item => item.art1).slice(0, 5),
+  [products]);
 
-  const handleOnClick = () => {
-    navigate('/artisiti');
-  };
-
-  if (art1.length === 0) {
-    return <div>Loading...</div>; // Shows loading if no data is available
-  }
+  console.log("inside Art1", art1Products);
 
   return (
     <div className="my-10">
-      <div className="text-center text-3xl py-8"> {/* Temporary background to check visibility */}
+      <div className="text-center text-3xl py-8">
         <Title text1={"PERSONALISED"} text2={"WORKS"} />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
-          officiis eaque sint, fugit quo laborum.
+          Discover unique handcrafted artworks tailored just for you.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-        {art1.map((item, i) => (
-          <ProductItem
-            key={i}
-            id={item._id}
-            image={item.image}
-            name={item.name}
-            price={item.price}
-            onClick={handleOnClick}
-          />
-        ))}
-      </div>
+      {art1Products.length === 0 ? (
+        <p className="text-center text-gray-500">No personalized artworks available.</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+          {art1Products.map((item) => (
+            <ProductItem
+              key={item._id}
+              id={item._id}
+              images={item.images}  // Kept it consistent with BestSeller
+              name={item.name}
+              price={item.price}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

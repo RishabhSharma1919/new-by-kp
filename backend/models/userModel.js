@@ -1,4 +1,8 @@
-import mongoose from "mongoose";
+import { Resend } from "resend";
+import mongoose, { mongo } from "mongoose";
+import validator from "validator";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const userSchema = new mongoose.Schema(
   {
@@ -10,10 +14,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      validate: [validator.isEmail, "Invalid email format"],
     },
     password: {
       type: String,
       required: true,
+      minlength: [8, "Password must be at least 8 characters long"],
+    },
+    verifyCode: {
+      type: String,
+    },
+    verifyCodeExpiry: {
+      type: Date,
+    },
+    verifyStatus: {
+      type: Boolean,
+      default: false,
     },
     cartData: {
       type: Object,

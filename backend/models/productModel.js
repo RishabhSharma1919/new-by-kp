@@ -1,22 +1,51 @@
+// import mongoose from "mongoose";
+
+// const productSchema = new mongoose.Schema({
+//     name: { type: String, required: true },
+//     description: { type: String, required: true },
+//     price: { type: Number, required: true },
+//     category: { type: String, required: true },
+//     subCategory: { type: String, required: true },
+//     bestSeller: { type: Boolean, required: true },
+//     art1: { type: Boolean, required: true },
+//     art2: { type: Boolean, required: true },
+//     art3: { type: Boolean, required: true },
+//     art4: { type: Boolean, required: true },
+//     art5: { type: Boolean, required: true },
+//     sizes: [
+//       {
+//         length: { type: Number, required: true },
+//         breadth: { type: Number, required: true }
+//       }
+//     ]
+//   });
+  
+
+// const productModel = mongoose.models.product || mongoose.model("product", productSchema);
+// export default productModel;
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    image: { type: [String], required: true }, // Change image to an array of strings
+    images: { type: [String], required: true }, // Store images as an array
     category: { type: String, required: true },
     subCategory: { type: String, required: true },
-    sizes_length: { type: Number, required: true },
-    sizes_breadth: { type: Number, required: true },
-    bestSeller: { type: Boolean, required: true }, // Change bestSeller to Boolean
-    art1: { type: Boolean, required: true }, // Change art1 to Boolean
-    art2: { type: Boolean, required: true }, // Change art2 to Boolean
-    art3: { type: Boolean, required: true }, // Change art3 to Boolean
-    art4: { type: Boolean, required: true }, // Change art4 to Boolean
-    art5: { type: Boolean, required: true }, // Change art5 to Boolean
-    date: { type: Number, required: true }
+    bestSeller: { type: Boolean, required: true },
+    art1: { type: Boolean, required: true },
+    art2: { type: Boolean, required: true },
+    art3: { type: Boolean, required: true },
+    art4: { type: Boolean, required: true },
+    art5: { type: Boolean, required: true },
+    length: { type: Number, required: true },
+    breadth: { type: Number, required: true },
+    size: { type: String },
 });
 
-const productModel = mongoose.models.product || mongoose.model("product", productSchema);
+const productModel = mongoose.models.Product || mongoose.model("Product", productSchema);
 export default productModel;
+
+
+// wanted_length_sizes:{ type: Number},
+// wanted_breadth_sizes:{type: Number}

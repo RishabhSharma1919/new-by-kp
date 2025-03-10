@@ -1,53 +1,42 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useMemo } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
 
 const LatestCollection = () => {
   const { products } = useContext(ShopContext);
-  const [latestProduct, setLatestProduct] = useState([]);
 
-  useEffect(() => {
-    if (products.length > 0) {
-      setLatestProduct(products.slice(0, 10));
-    }
-  }, [products]);
+  // Memoized filtering for latest collection (assuming sorting by latest added)
+  const latestProducts = useMemo(() => 
+    (products || []).slice(0, 5),  // Fetching the latest 5 products
+  [products]);
 
-  if (products.length === 0) {
-    return (
-      <div className="my-10 text-center">
-        <p className="text-xl text-gray-600">No products available at the moment.</p>
-      </div>
-    );
-  }
+  console.log("inside latest collection", latestProducts);
 
   return (
-    <div className="my-10 ">
-      <div className="text-center py-8 text-3xl">
+    <div className="my-10">
+      <div className="text-center text-3xl py-8">
         <Title text1={"LATEST"} text2={"COLLECTION"} />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae ex
-          velit, quae quo minima repudiandae
+          Discover our newest additions, handpicked for you.
         </p>
       </div>
 
-      {/* RENDERING PRODUCT */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-        {latestProduct.length === 0 ? (
-          <div className="col-span-full text-center text-gray-600">Loading products...</div>
-        ) : (
-          latestProduct.map((item) => (
+      {latestProducts.length === 0 ? (
+        <p className="text-center text-gray-500">No latest products available.</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+          {latestProducts.map(item => (
             <ProductItem
-              key={item._id} // Use unique _id instead of index
+              key={item._id}
               id={item._id}
-              image={item.image}
+              images={item.images}  // Consistent prop usage
               name={item.name}
               price={item.price}
-              alt={`Image of ${item.name}`} // Add alt text for images
             />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

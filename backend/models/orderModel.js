@@ -5,7 +5,12 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
   items: {
+    type: Array,
+    required: true,
+  },
+  itemi: {
     type: Array,
     required: true,
   },
@@ -35,6 +40,16 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+
+ descriptionbyuser:{
+  type:String,default:"null"
+
+ },
+ imageuser:{
+type:String,
+default:""
+ }
+
 });
 
 const orderModel =
