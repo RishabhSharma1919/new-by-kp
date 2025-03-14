@@ -3,7 +3,7 @@ import { ShopContext } from '../context/ShopContext';
 import Title from './Title';
 
 const CartTotal = () => {
-  const { getCartAmount, currency, delivery_fee } = useContext(ShopContext);
+  const { getCartAmount, currency, delivery_fee,backendUrl } = useContext(ShopContext);
 
   const subtotal = getCartAmount();
   const total = subtotal === 0 ? 0 : subtotal + delivery_fee;

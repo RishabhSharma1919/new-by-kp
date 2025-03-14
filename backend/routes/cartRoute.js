@@ -30,6 +30,6 @@ cartRouter.delete("/clear", authUser, deletecart);
 cartRouter.post("/add", authUser, addToCart);
 
 // Update cart (PUT request)
-cartRouter.put("/update", authUser, updateCart);
+cartRouter.post("/update", authUser, updateCart);
 
 export default cartRouter;

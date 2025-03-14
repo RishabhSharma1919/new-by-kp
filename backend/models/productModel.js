@@ -1,28 +1,4 @@
-// import mongoose from "mongoose";
 
-// const productSchema = new mongoose.Schema({
-//     name: { type: String, required: true },
-//     description: { type: String, required: true },
-//     price: { type: Number, required: true },
-//     category: { type: String, required: true },
-//     subCategory: { type: String, required: true },
-//     bestSeller: { type: Boolean, required: true },
-//     art1: { type: Boolean, required: true },
-//     art2: { type: Boolean, required: true },
-//     art3: { type: Boolean, required: true },
-//     art4: { type: Boolean, required: true },
-//     art5: { type: Boolean, required: true },
-//     sizes: [
-//       {
-//         length: { type: Number, required: true },
-//         breadth: { type: Number, required: true }
-//       }
-//     ]
-//   });
-  
-
-// const productModel = mongoose.models.product || mongoose.model("product", productSchema);
-// export default productModel;
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({

@@ -1,78 +1,62 @@
 import { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { assets } from "../assets/assets";
 import Title from "../components/Title";
-import ProductItem from "../components/ProductItem";
+import { cn } from "@/lib/utils"; // Utility for conditional classnames
+import { Card, CardContent } from "@/components/ui/card"; // ShadCN Card component
 
 const Collection = () => {
   const { products, search, showSearch } = useContext(ShopContext);
 
-  const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
-  //const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState("relevant");
 
+  // Toggle category filter
   const toggleCategory = (e) => {
-    if (category.includes(e.target.value)) {
-      setCategory((p) => p.filter((item) => item !== e.target.value));
-    } else {
-      setCategory((p) => [...p, e.target.value]);
-    }
+    const value = e.target.value;
+    setCategory((prev) =>
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+    );
   };
-  // const toggleSubCategory = (e) => {
-  //   if (subCategory.includes(e.target.value)) {
-  //     setSubCategory((p) => p.filter((item) => item !== e.target.value));
-  //   } else {
-  //     setSubCategory((p) => [...p, e.target.value]);
-  //   }
-  // };
 
+  // Apply filter based on search and category
   const applyFilter = () => {
-    let productsCopy = products.slice();
+    let filtered = [...products];
 
     if (showSearch && search) {
-      productsCopy = productsCopy.filter((item) =>
+      filtered = filtered.filter((item) =>
         item.name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
     if (category.length > 0) {
-      productsCopy = productsCopy.filter((item) =>
-        category.includes(item.category)
-      );
+      filtered = filtered.filter((item) => category.includes(item.category));
     }
 
-    
-    setFilterProducts(productsCopy);
+    setFilterProducts(filtered);
   };
-  
-  // if (subCategory.length > 0) {
-  //   productsCopy = productsCopy.filter((item) =>
-  //     subCategory.includes(item.subCategory)
-  //   );
-  // }
+
+  // Sort products
   const sortProduct = () => {
-    let fpCopy = filterProducts.slice();
+    let sortedProducts = [...filterProducts];
 
     switch (sortType) {
       case "low-high":
-        setFilterProducts(fpCopy.sort((a, b) => a.price - b.price));
+        sortedProducts.sort((a, b) => a.price - b.price);
         break;
-
       case "high-low":
-        setFilterProducts(fpCopy.sort((a, b) => b.price - a.price));
+        sortedProducts.sort((a, b) => b.price - a.price);
         break;
-
       default:
         applyFilter();
-        break;
+        return;
     }
+
+    setFilterProducts(sortedProducts);
   };
 
   useEffect(() => {
     applyFilter();
-  //}, [category, subCategory, search, showSearch, products]);
   }, [category, search, showSearch, products]);
 
   useEffect(() => {
@@ -80,91 +64,55 @@ const Collection = () => {
   }, [sortType]);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
-      {/* FILTER OPTIONS */}
-      {/* <div className="min-w-60">
-        <p
-          onClick={() => setShowFilter(!showFilter)}
-          className="my-2 text-xl flex items-center cursor-pointer gap-2"
+    <div className="flex flex-col gap-6 pt-10 border-t px-4 sm:px-8 lg:px-16">
+      {/* HEADER & SORT OPTIONS */}
+      <div className="flex flex-col sm:flex-row justify-between items-center text-4xl sm:text-5xl mb-4 gap-4">
+        <Title text1={"ALL"} text2={"COLLECTIONS"} />
+        <select
+          onChange={(e) => setSortType(e.target.value)}
+          className="border-2 border-gray-300 text-sm px-3 py-1 rounded-md"
         >
-          FILTERS
-          <img
-            src={assets.dropdown_icon}
-            className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`}
-            alt=""
-          />
-        </p>
-        
-        CATEGORY FILTER */}
-        {/* <div
-          className={`border border-gray-300 pl-5 py-3 mt-6 ${
-            showFilter ? " " : "hidden"
-          } sm:block`}
-        >
-          <p className="mb-3 text-sm font-medium">CATEGORIES</p>
-          <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"ANIME"}
-                onChange={toggleCategory}
-              />{" "}
-              ANIME
-            </p>
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Wo"}
-                onChange={toggleCategory}
-              />{" "}
-              Women
-            </p>
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value={"Kids"}
-                onChange={toggleCategory}
-              />{" "}
-              Kids
-            </p>
-          </div>
-        </div> */}
+          <option value="relevant">Sort by: Relevant</option>
+          <option value="low-high">Sort by: Low to High</option>
+          <option value="high-low">Sort by: High to Low</option>
+        </select>
+      </div>
 
-      {/* RIGHT SIDE */}
-      <div className="flex-1">
-        <div className="flex justify-between text-base sm:text-2xl mb-4">
-          <Title text1={"ALL"} text2={"COLLECTIONS"} />
-
-          {/* PRODUCT SORT */}
-          <select
-            onChange={(e) => setSortType(e.target.value)}
-            className="border-2 border-gray-300 text-sm px-2"
-          >
-            <option value="relevant">Sort by: Relevant</option>
-            <option value="low-high">Sort by: Low to High</option>
-            <option value="high-low">Sort by: High to Low</option>
-          </select>
-        </div>
-
-        {/* MAP PRODUCTS */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-          {filterProducts.map((item, i) => (
-            <ProductItem
-              key={i}
-              id={item._id}
-              images={item.images}
-              name={item.name}
-              price={item.price}
-            />
+      {/* DISPLAY PRODUCTS */}
+      {filterProducts.length === 0 ? (
+        <p className="text-center text-gray-500">No products found.</p>
+      ) : (
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filterProducts.map((item) => (
+            <Card
+              key={item._id}
+              className={cn(
+                "relative w-full bg-[#E8E8E3] rounded-lg overflow-hidden shadow-lg cursor-pointer transition-transform duration-500",
+                "hover:scale-[1.02] hover:shadow-2xl"
+              )}
+              onClick={() => window.location.href = `/product/${item._id}`}
+            >
+              <CardContent className="p-4">
+                <div className="relative w-full h-48 flex justify-center">
+                  <div className="absolute w-full h-full bg-cover bg-center rounded-t-md overflow-hidden">
+                    <img
+                      src={item.images[0]}
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div className="p-3 text-center">
+                  <h3 className="text-lg font-semibold">{item.name}</h3>
+                  <p className="text-gray-700">${item.price}</p>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
-      </div>
+      )}
     </div>
   );
 };
 
 export default Collection;
-

@@ -2,37 +2,43 @@ import React from "react";
 import { assets } from "../assets/assets";
 
 const OurPolicy = () => {
+  const policies = [
+    {
+      icon: assets.exchange_icon,
+      title: "Easy Exchange Policy",
+      description: "Hassle-free exchanges for all customers.",
+    },
+    {
+      icon: assets.quality_icon,
+      title: "Uniqueness in ART",
+      description: "We provide one-of-a-kind artwork that stands out.",
+    },
+    {
+      icon: assets.support_img,
+      title: "Best Customer Support",
+      description: "24/7 assistance available for all your needs.",
+    },
+  ];
+
   return (
-    <div className="flex flex-col sm:flex-row justify-around gap-12 sm:gap-2 text-center py-20 text-xs sm:text-sm md:text-base text-gray-700">
-      <div className="hover:scale-105 transition-all duration-300 ease-in-out">
-        <img
-          src={assets.exchange_icon}
-          className="w-12 m-auto mb-5"
-          alt="Easy Exchange Policy Icon"
-        />
-        <p className="font-semibold">Easy Exchange Policy</p>
-        <p className="text-gray-400">We offer hassle-free exchange policy.</p>
-      </div>
+    <div className="flex flex-wrap justify-center gap-12 text-center py-16 bg-[#262B2B]">
+      {policies.map((policy, index) => (
+        <div key={index} className="group relative w-56 h-56 perspective-1000">
+          {/* Flip Container */}
+          <div className="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180">
+            {/* Front Side */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 rounded-xl bg-[#3A3F3F] shadow-lg border border-[#555B5B] transform rotate-y-0 backface-hidden">
+              <img src={policy.icon} className="w-16 mb-4" alt={policy.title} />
+              <p className="font-semibold text-white">{policy.title}</p>
+            </div>
 
-      <div className="hover:scale-105 transition-all duration-300 ease-in-out">
-        <img
-          src={assets.quality_icon}
-          className="w-12 m-auto mb-5"
-          alt="7 Days Return Policy Icon"
-        />
-        <p className="font-semibold">Uniqueness in ART</p>
-        <p className="text-gray-400">We provide unique Artwork.</p>
-      </div>
-
-      <div className="hover:scale-105 transition-all duration-300 ease-in-out">
-        <img
-          src={assets.support_img}
-          className="w-12 m-auto mb-5"
-          alt="Best Customer Support Icon"
-        />
-        <p className="font-semibold">Best Customer Support</p>
-        <p className="text-gray-400">We provide 24/7 customer support.</p>
-      </div>
+            {/* Back Side */}
+            <div className="absolute inset-0 flex items-center justify-center p-6 rounded-xl bg-[#E0E0E0] text-black shadow-lg border border-[#555B5B] transform rotate-y-180 backface-hidden">
+              <p className="text-sm font-medium">{policy.description}</p>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

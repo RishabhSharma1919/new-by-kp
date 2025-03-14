@@ -1,19 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import Art1 from "../components/Art1";
 import Art2 from "../components/Art2";
 import Art3 from "../components/Art3";
 import Art4 from "../components/Art4";
 import Art5 from "../components/Art5";
+import Title from "../components/Title";
 
 const Artists = () => {
-  const [activeSection, setActiveSection] = useState(null);
-  const navigate = useNavigate();
-
-  const toggleSection = (index) => {
-    setActiveSection((prev) => (prev === index ? null : index));
-  };
-
   const sections = [
     { name: "Painters", component: <Art1 /> },
     { name: "Sculptors", component: <Art2 /> },
@@ -23,38 +16,30 @@ const Artists = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-gray-100 p-4">
-      {sections.map((section, index) => (
-        <div
-          key={index}
-          className="w-full bg-white rounded-lg shadow-md mb-5 p-4 transition-all duration-500"
-        >
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg font-bold">{section.name}</h2>
-            <button
-              onClick={() => toggleSection(index)}
-              className={`text-blue-500 underline font-medium ${
-                activeSection === index ? "font-bold" : ""
-              }`}
-              aria-expanded={activeSection === index}
-              aria-controls={`section-${index}`}
-            >
-              {activeSection === index ? "Hide Products" : "Show Products"}
-            </button>
-          </div>
+    <div className="w-full min-h-screen bg-transparent relative px-6 sm:px-12 py-12">
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30 -z-10"></div>
 
-          {/* Section Content */}
+      {/* Title Section */}
+      <div className="text-center text-5xl py-8">
+      <Title text1="Our" text2="Artists" className="text-6xl md:text-7xl" />       
+       <p className="text-gray-200 mt-3 text-lg md:text-xl">
+          Discover talent from various art disciplines
+        </p>
+      </div>
+
+      {/* Artist Sections (Glassmorphism Cards) */}
+      <div className="w-full max-w-6xl mx-auto space-y-8">
+        {sections.map((section, index) => (
           <div
-            id={`section-${index}`}
-            className={`mt-4 bg-yellow-200 p-4 transition-all duration-500 ${
-              activeSection === index ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-            }`}
-            style={{ overflow: "hidden" }}
+            key={index}
+            className="bg-white/10 backdrop-blur-md shadow-lg border border-white/20 rounded-lg p-6"
           >
-            {activeSection === index && section.component}
+            <h2 className="text-2xl font-bold text-white">{section.name}</h2>
+            <div className="bg-white/20 p-4 rounded-md">{section.component}</div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

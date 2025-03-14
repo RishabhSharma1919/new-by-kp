@@ -212,40 +212,43 @@ const createToken = (id) => {
 };
 
 // 🔹 Function to send verification email
+
+
+
 export const verifyEmail = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("Verifying email:", email);
 
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ success: false, message: "Please enter a valid email" });
+      return res.status(400).json({ success: false, message: "Invalid email" });
     }
 
-    const existingUser = await userModel.findOne({ email });
+    // Check for existing verified user
+    const existingUser = await userModel.findOne({ email, verifyStatus: true });
     if (existingUser) {
       return res.status(400).json({ success: false, message: "User already exists" });
     }
 
-    // Generate 6-digit Verification Code
+    // Remove unverified user before sending a new code
+    await userModel.deleteOne({ email });
+console.log("reached here 1");
+    // Generate and store verification code
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const verifyCodeExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
+    const verifyCodeExpiry = new Date(Date.now() + 10 * 60 * 1000);
+console.log("verifycode",verifyCode);
+console.log("reached here 2");
+    await userModel.create({ email, verifyCode, verifyCodeExpiry });
+    console.log("reached here 3");
 
-    // Store verification code in DB
-    await userModel.findOneAndUpdate(
-      { email },
-      { verifyCode, verifyCodeExpiry },
-      { upsert: true, new: true }
-    );
-
-    // Send email using Resend
+    // Send verification email
     await resend.emails.send({
-      from: "you@yourdomain.com", // Use a verified sender email!
+      from: "onboarding@resend.dev",
       to: email,
       subject: "Email Verification Code",
       html: `<p>Your verification code is <strong>${verifyCode}</strong>. It expires in 10 minutes.</p>`,
     });
 
-    res.status(200).json({ success: true, message: "Verification email sent successfully." });
+    res.status(200).json({ success: true, message: "Verification email sent." });
   } catch (error) {
     console.error("Error sending verification email:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -253,43 +256,39 @@ export const verifyEmail = async (req, res) => {
 };
 
 
+// if (!user || user.verifyCode !== verifyCode || new Date() > user.verifyCodeExpiry) {
+//   return res.status(400).json({ success: false, message: "Invalid or expired verification code" });
+// }
+
+
+
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, verifyCode } = req.body;
-    console.log("Registering user:", name);
 
-    // Fetch user from DB
     const user = await userModel.findOne({ email });
 
-    // if (!user || user.verifyCode !== verifyCode || new Date() > user.verifyCodeExpiry) {
-    //   return res.status(400).json({ success: false, message: "Invalid or expired verification code" });
-    // }
-
-    if (!user ) {
-      return res.status(400).json({ success: false, message: "Invalid 1 or expired verification code" });
+    if (!user) {
+      return res.status(400).json({ success: false, message: "Invalid or expired verification code" });
     }
 
-    if ( user.verifyCode !== verifyCode ) {
-      return res.status(400).json({ success: false, message: "Invalid 2 or expired verification code" });
-    }
-
-    if ( new Date() > user.verifyCodeExpiry) {
-      return res.status(400).json({ success: false, message: "Invalid 3 or expired verification code" });
+    if (user.verifyCode !== verifyCode || new Date() > user.verifyCodeExpiry) {
+      await userModel.deleteOne({ email }); // Remove unverified user
+      return res.status(400).json({ success: false, message: "Invalid verification code" });
     }
 
     if (password.length < 8) {
       return res.status(400).json({ success: false, message: "Password must be at least 8 characters long" });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Update user in DB
+    // Update user data and mark as verified
     user.name = name;
     user.password = hashedPassword;
     user.verifyCode = null;
     user.verifyCodeExpiry = null;
+    user.verifyStatus = true;
     await user.save();
 
     res.status(201).json({ success: true, message: "User registered successfully." });
@@ -298,6 +297,8 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+
+
 
 // ✅ Route for User Registration (After Email Verification)
 // export const registerUser = async (req, res) => {
@@ -371,83 +372,68 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    console.log("🟢 Received request body:", req.body);
-
     const { email, password } = req.body;
 
     if (!email || !password) {
-      console.error("❌ Email or password missing:", { email, password });
-      return res.status(400).json({ success: false, message: "Email and password are required" });
+      return res.status(400).json({ success: false, message: "Email and password required" });
     }
 
-    // Find user
     const user = await userModel.findOne({ email });
-    if (!user) {
-      console.error("❌ User not found:", email);
-      return res.status(401).json({ success: false, message: "User does not exist" });
+
+    if (!user || !user.verifyStatus) {
+      return res.status(401).json({ success: false, message: "User does not exist or is not verified" });
     }
 
-    console.log("🔵 User from DB:", user);
-    console.log("🟡 Comparing passwords:", { entered: password, stored: user.password });
-
-    // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("🟢 Password match result:", isMatch);
-
     if (!isMatch) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
 
-      // Generate JWT Token
-      const token = createToken(user._id);
-      res.json({ success: true, token });
-
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    res.json({ success: true, token });
   } catch (error) {
-    console.error("🔥 Login error:", error);
+    console.error("Login error:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
+
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("Forgot password request for:", email);
 
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ success: false, message: "Please enter a valid email" });
+      return res.status(400).json({ success: false, message: "Invalid email" });
     }
 
-    const user = await userModel.findOne({ email });
+    const user = await userModel.findOne({ email, verifyStatus: true });
 
     if (!user) {
-      return res.status(400).json({ success: false, message: "User does not exist" });
+      return res.status(400).json({ success: false, message: "User does not exist or is not verified" });
     }
 
-    // Generate a new 6-digit OTP
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const resetCodeExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10-minute expiry
+    const resetCodeExpiry = new Date(Date.now() + 10 * 60 * 1000);
+    console.log("verifycode",resetCode);
 
-    console.log("Generated reset code:", resetCode);
-
-    // Store reset code in the database
     user.verifyCode = resetCode;
     user.verifyCodeExpiry = resetCodeExpiry;
     await user.save();
 
-    // Send email with reset code
     await resend.emails.send({
-      from: process.env.EMAIL_FROM || "your-verified-email@domain.com",
+      from: "your-verified-email@domain.com",
       to: email,
       subject: "Password Reset Code",
       html: `<p>Your password reset code is <strong>${resetCode}</strong>. It expires in 10 minutes.</p>`,
     });
 
-    res.status(200).json({ success: true, message: "Password reset email sent successfully." });
+    res.status(200).json({ success: true, message: "Password reset email sent." });
   } catch (error) {
     console.error("Error in forgotPassword:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+
 
 export const resetPassword = async (req, res) => {
   try {

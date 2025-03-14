@@ -12,7 +12,7 @@ import connectCloudinary from "./config/cloudinary.js";
 import upload from "./middleware/multer.js";
 import uploadrouter from "./routes/uploadRoutes.js";
 import router from "./routes/productRoutes.js";
-
+import wishRouter from "./routes/wishRoute.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
@@ -21,12 +21,20 @@ connectDB();
 connectCloudinary();
 
 // ✅ CORS Configuration (Restrict Allowed Origins)
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "*", // Change "*" to frontend URL in production
     credentials: true,
   })
 );
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_URL || "http://localhost:5173", // ✅ Set your frontend URL
+//     credentials: true,
+//   })
+// );
+
 
 // ✅ Middleware
 app.use(morgan("dev")); // Logs requests in the console
@@ -37,6 +45,7 @@ app.use(express.urlencoded({ extended: true })); // Parse form data
 app.use("/api/upload",uploadrouter);
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
+app.use("/api/wishlist",wishRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 

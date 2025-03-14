@@ -4,57 +4,78 @@ import NewsletterBox from "../components/NewsletterBox";
 
 const About = () => {
   return (
-    <div>
-      <div className="text-2xl text-center pt-8 border-t">
-        <Title text1={"ABOUT"} text2={"US"} />
+    <div className="relative bg-transparent px-6 sm:px-12 py-12">
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30 -z-10"></div>
+
+      {/* Title Section with Increased Font Size */}
+      <div className="text-center text-4xl md:text-5xl  pt-8 border-t border-gray-300/30">
+        <Title text1="ABOUT" text2="US" className="text-5xl md:text-6xl" />
       </div>
 
-      <div className="my-10 flex flex-col md:flex-row gap-16">
-        <img
-          src={assets.aboutus2}
-          className="w-full md:max-w-[450px]"
-          alt="A welcoming atmosphere showcasing artwork at ARTNART"
-        />
-        <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-600">
-          <p className="text-lg leading-relaxed">
-            Welcome to ARTNART, where creativity meets craftsmanship. We are passionate about curating and delivering the finest collection of artistic pieces that celebrate the beauty and diversity of art.
+      {/* About Us Content */}
+      <div className="my-10 flex flex-col md:flex-row gap-16 text-white">
+        {/* Framed Image */}
+        <div className="relative w-full md:max-w-[450px]">
+          <div className="border-4 border-gray-300 shadow-lg rounded-lg overflow-hidden p-2">
+            <img
+              src={assets.aboutus2}
+              className="w-full h-auto rounded-md"
+              alt="A welcoming atmosphere showcasing artwork at ARTNART"
+            />
+          </div>
+        </div>
+
+        {/* About Content */}
+        <div className="flex flex-col justify-center gap-6 md:w-2/4">
+          <p className="text-lg leading-relaxed drop-shadow-md">
+            Welcome to <b>ARTNART</b>, where creativity meets craftsmanship. We are passionate about curating and delivering the finest collection of artistic pieces that celebrate the beauty and diversity of art.
           </p>
-          <p className="text-lg leading-relaxed">
-            At the heart of our journey lies a deep appreciation for the traditional and contemporary art forms that inspire connection, emotion, and individuality. Our platform serves as a bridge between skilled artists and those who admire and cherish their work, offering a space where art finds its rightful home.
+          <p className="text-lg leading-relaxed drop-shadow-md">
+            At the heart of our journey lies a deep appreciation for traditional and contemporary art forms. Our platform connects skilled artists with those who admire and cherish their work, offering a space where art finds its rightful home.
           </p>
 
-          <b className="text-gray-800">Our Mission</b>
-          <p className="text-lg leading-relaxed">
-            Our mission is to make art accessible to everyone while supporting talented artists from across the globe. We strive to create a space where creativity flourishes, enabling artists to share their stories and craft with the world.
+          <b className="text-gray-200 text-xl">Our Mission</b>
+          <p className="text-lg leading-relaxed drop-shadow-md">
+            Our mission is to make art accessible while supporting talented artists worldwide. We strive to create a space where creativity flourishes, enabling artists to share their stories and craft with the world.
           </p>
         </div>
       </div>
 
-      <div className="text-2xl font-semibold py-4">
-        <Title text1={"WHY"} text2={"CHOOSE US"} />
+      {/* Why Choose Us Section */}
+      <div className="text-center text-white text-2xl font-semibold py-6">
+        <Title text1="WHY" text2="CHOOSE US" className="text-white drop-shadow-md" />
       </div>
 
-      <div className="flex flex-col md:flex-row text-sm mb-20">
-        <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Quality Assurance:</b>
-          <p className="text-gray-600">
-            We meticulously select and vet each product to ensure it meets our stringent quality standard.
-          </p>
-        </div>
-        <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Convenience:</b>
-          <p className="text-gray-600">
-            With our user-friendly interface and hassle-free ordering process, shopping has never been easier.
-          </p>
-        </div>
-        <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Exceptional Customer Service:</b>
-          <p className="text-gray-600">
-            Our team of dedicated professionals is here to assist you the right way, ensuring your satisfaction is our top priority.
-          </p>
-        </div>
+      {/* Flip Cards (Only Front Side Displays Content) */}
+      <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-20">
+        {[
+          "Quality Assurance",
+          "Convenience",
+          "Exceptional Customer Service",
+        ].map((text, index) => (
+          <div key={index} className="group relative w-80 h-44 perspective-1000">
+            {/* Flip Container */}
+            <div className="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180">
+              
+              {/* Front Side with Text */}
+              <div className="absolute inset-0 flex items-center justify-center bg-white/10 backdrop-blur-md shadow-md rounded-lg p-6 text-xl font-semibold border border-white/20 backface-hidden">
+                {text}
+              </div>
+
+              {/* Back Side with Mirrored Text Only (No Content) */}
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-800 text-white rounded-lg p-6 shadow-md rotate-y-180 backface-hidden">
+                <p className="text-xl font-semibold transform scale-y-[-1] opacity-10 select-none">
+                  {text}
+                </p>
+              </div>
+
+            </div>
+          </div>
+        ))}
       </div>
 
+      {/* Newsletter Section */}
       <div className="mt-12">
         <NewsletterBox />
       </div>

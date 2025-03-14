@@ -8,17 +8,21 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: function () {
+        return this.verifyStatus;
+      },
     },
     email: {
       type: String,
-      required: true,
+      required: true,  // Always required for verification
       unique: true,
       validate: [validator.isEmail, "Invalid email format"],
     },
     password: {
       type: String,
-      required: true,
+      required: function () {
+        return this.verifyStatus;  // ✅ Now required only if verifyStatus is true
+      },
       minlength: [8, "Password must be at least 8 characters long"],
     },
     verifyCode: {

@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import uploadIcon from "../assets/upload_area.png";
 
-const backendUrl = "http://localhost:4000";
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Add = ({ token }) => {
   const [loading, setLoading] = useState(false);
 

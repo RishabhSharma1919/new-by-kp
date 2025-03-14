@@ -58,7 +58,7 @@ const PlaceOrder = () => {
           const itemInfo = products.find((product) => product._id === item.itemId);
           
           if (!itemInfo) {
-            console.error(`Product with ID ${item.itemId} not found in products list.`);
+            //console.error(`Product with ID ${item.itemId} not found in products list.`);
             continue;  // Skip this item if it doesn't exist in products
           }
   
@@ -71,7 +71,7 @@ const PlaceOrder = () => {
         }
       }
     } else {
-      console.error("cartItems.items is not an array", cartItems.items);
+      //console.error("cartItems.items is not an array", cartItems.items);
     }
   
     if (orderItems.length === 0) {
@@ -85,7 +85,7 @@ const PlaceOrder = () => {
       items: cartItems.items,  // Pass directly
       amount: getCartAmount() + delivery_fee,
     };
-  console.log("from yje place order",orderData);
+  //console.log("from yje place order",orderData);
   
     try {
       let orderSuccess = false;
@@ -93,7 +93,7 @@ const PlaceOrder = () => {
       switch (method) {
         case "cod": {
           const res = await axios.post(
-            `http://localhost:4000/api/order/place`,
+            `${backendUrl}/api/order/place`,
             orderData,
             {
               headers: { Authorization: `Bearer ${token}` },
@@ -132,7 +132,7 @@ const PlaceOrder = () => {
       if (orderSuccess) {
         try {
           // 🗑 Request backend to delete cart (Make sure URL matches backend route)
-          await axios.delete(`http://localhost:4000/api/cart/clear`, {
+          await axios.delete(`${backendUrl}/api/cart/clear`, {
             headers: { Authorization: `Bearer ${token}` },
           });
         
@@ -145,13 +145,13 @@ const PlaceOrder = () => {
             navigate("/orders");
           }, 100);
         } catch (err) {
-          console.error("Failed to clear cart from database:", err);
+         // console.error("Failed to clear cart from database:", err);
         }
         
       }
       
     } catch (error) {
-      console.error(error);
+     // console.error(error);
       toast.error("Failed to place order. Please try again.");
     }
   };

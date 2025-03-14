@@ -28,6 +28,12 @@ import hero5 from './hero5.jpg'
 import hero6 from './hero6.jpg'
 import hero7 from './hero7.jpg'
 import aboutus2 from './aboutus2.png'
+import bgimage from './Leonardo.png'
+import hero21 from './hero22.png'
+import hero22 from './hero21.png'
+import hero23 from './hero23.png'
+
+
 
 export const assets = {
     logo,
@@ -58,6 +64,11 @@ export const assets = {
     hero6,
     hero7,
     aboutus2,
+    bgimage,
+    hero21,
+    hero22,
+    hero23
+
     
 }
 

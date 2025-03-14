@@ -2,10 +2,20 @@ import React, { useState, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { ShopContext } from "../context/ShopContext";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetClose,
+} from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const [visible, setVisible] = useState(false);
-
   const {
     setShowSearch,
     getCartCount,
@@ -23,132 +33,132 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { to: "/", text: "HOME" },
-    { to: "/collection", text: "COLLECTION" },
-    { to: "/artist", text: "ARTISTS" },
-    { to: "/about", text: "ABOUT" },
-    { to: "/contact", text: "CONTACT" },
+    { to: "/", text: "Home" },
+    { to: "/collection", text: "Collection" },
+    { to: "/artist", text: "Artists" },
+    {to:"/wishlist",text:"WishList"},
+    { to: "/about", text: "About" },
+    { to: "/contact", text: "Contact" },
   ];
-  console.log("======",getCartCount());
- 
 
   return (
     <div className="relative z-50">
       {/* Main Navbar */}
-      <div className="flex items-center justify-between py-5 px-4 sm:px-10 font-medium bg-white shadow-md">
+      <div className="flex items-center justify-between py-6 px-6 sm:px-12 font-medium shadow-md">
         <Link to="/">
-          <img src={assets.logo1} className="w-36" alt="Logo" />
+          <img src={assets.logo1} className="w-44" alt="Logo" />
         </Link>
 
         {/* Desktop Navigation */}
-        <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
+        <ul className="hidden sm:flex gap-8 text-xl text-[#D6D6C7]">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
-              className="flex flex-col items-center gap-1"
-              activeClassName="text-black"
+              className="relative flex flex-col items-center gap-1 hover:underline hover:text-white transition"
             >
-              <p>{link.text}</p>
-              <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
+              {link.text}
             </NavLink>
           ))}
         </ul>
 
         {/* Icons and Mobile Menu Button */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-8">
+          {/* Search Icon */}
           <img
             src={assets.search_icon}
-            className="w-5 cursor-pointer"
+            className="w-6 cursor-pointer"
             onClick={() => setShowSearch(true)}
             alt="Search"
             aria-label="Search"
           />
-          <div className="group relative">
-            <img
-              src={assets.profile_icon}
-              className="w-5 cursor-pointer"
-              alt="Profile"
-              onClick={() => (token ? null : navigate("/login"))}
-              aria-label={token ? "Profile" : "Login"}
-            />
-            {token && (
-              <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
-                <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
-                  <p                     onClick={() => navigate("/cart")}
- 
-                  className="cursor-pointer hover:text-black">My Profile</p>
-                  <p
-                    onClick={() => navigate("/orders")}
-                    className="cursor-pointer hover:text-black"
-                  >
-                    Orders
-                  </p>
-                  <p
-                    onClick={logout}
-                    className="cursor-pointer hover:text-black"
-                  >
-                    Logout
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
+
+          {/* Profile Dropdown Menu */}
+          {/* Profile Dropdown Menu */}
+{/* Profile Dropdown Menu */}
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <img
+      src={assets.profile_icon}
+      className="w-6 cursor-pointer"
+      alt="Profile"
+      aria-label={token ? "Profile" : "Login"}
+      onClick={() => (token ? null : navigate("/login"))}
+    />
+  </DropdownMenuTrigger>
+  {token && (
+    <DropdownMenuContent
+      align="end"
+      className="w-48 bg-[#262B2B] text-gray-500 shadow-lg rounded-md py-2"
+    >
+      <DropdownMenuItem 
+        onClick={() => navigate("/cart")} 
+        className="px-4 py-2 hover:bg-[#3A3F3F] hover:text-gray-300"
+      >
+        My Profile
+      </DropdownMenuItem>
+      <DropdownMenuItem 
+        onClick={() => navigate("/orders")} 
+        className="px-4 py-2 hover:bg-[#3A3F3F] hover:text-gray-300"
+      >
+        Orders
+      </DropdownMenuItem>
+      <DropdownMenuItem 
+        onClick={logout} 
+        className="px-4 py-2 text-red-400 hover:bg-[#3A3F3F] hover:text-red-300"
+      >
+        Logout
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  )}
+</DropdownMenu>
+
+
+
+          {/* Cart Icon */}
           <Link to="/cart" className="relative">
             <img
               src={assets.cart_icon}
-              className="w-5 min-w-5"
+              className="w-6 min-w-6"
               alt="Cart"
               aria-label="Shopping Cart"
             />
-            <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
+            <p className="absolute right-[-6px] bottom-[-6px] w-5 text-center leading-5 bg-white text-black aspect-square rounded-full text-[10px]">
               {getCartCount()}
-              
             </p>
           </Link>
-          <img
-            src={assets.menu_icon}
-            className="w-5 cursor-pointer sm:hidden"
-            onClick={() => setVisible(true)}
-            alt="Menu"
-            aria-label="Open Menu"
-          />
-        </div>
-      </div>
 
-      {/* Full-Screen Sidebar Menu for Small Devices */}
-      <div
-        className={`fixed inset-0 bg-white transition-all duration-300 z-50 ${visible ? "translate-x-0" : "translate-x-full"}`}
-      >
-        <div className="flex flex-col text-gray-600 h-full">
-          <div
-            onClick={() => setVisible(false)}
-            className="flex items-center gap-4 p-4 cursor-pointer border-b"
-          >
-            <img
-              src={assets.dropdown_icon}
-              className="h-4 rotate-180"
-              alt="Close Menu"
-              aria-label="Close Menu"
-            />
-            <p>Close</p>
-          </div>
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.to}
-              onClick={() => setVisible(false)}
-              to={link.to}
-              className="py-4 pl-6 border-b"
-              activeClassName="text-black"
-            >
-              {link.text}
-            </NavLink>
-          ))}
+          {/* Mobile Menu Button */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <img
+                src={assets.menu_icon}
+                className="w-6 cursor-pointer sm:hidden"
+                alt="Menu"
+                aria-label="Open Menu"
+              />
+            </SheetTrigger>
+            <SheetContent side="right" className="w-64 p-4 bg-[#262B2B] text-[#D6D6C7] shadow-lg">
+              <SheetClose asChild>
+                <button className="absolute top-4 right-4 text-white text-xl">❌</button>
+              </SheetClose>
+              <nav className="flex flex-col gap-6 mt-12 text-2xl">
+                {navLinks.map((link) => (
+                  <NavLink 
+                    key={link.to} 
+                    to={link.to} 
+                    className="hover:underline hover:text-white"
+                  >
+                    {link.text}
+                  </NavLink>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </div>
-
   );
-};  
+};
 
 export default Navbar;

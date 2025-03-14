@@ -5,6 +5,7 @@ import LatestCollection from "../components/LatestCollection";
 import OurPolicy from "../components/OurPolicy";
 import NewsletterBox from "../components/NewsletterBox";
 import Art1 from '../components/Art1';
+import Hero2 from '../components/Hero2';
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
         <LatestCollection />
       </div>
       <BestSeller />
+      <Hero2/>
       <Art1 />
       <OurPolicy />
       <NewsletterBox />
@@ -23,3 +25,4 @@ const Home = () => {
 
 
 export default Home
+

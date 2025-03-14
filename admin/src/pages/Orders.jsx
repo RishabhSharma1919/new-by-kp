@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { backendUrl, currency } from "../App";
+import { currency } from "../App";
 import { assets } from "../assets/assets";
 
 const Order = ({ token }) => {
   const [orders, setOrders] = useState([]);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const fetchAllOrders = async () => {
     if (!token) {
@@ -16,7 +17,7 @@ const Order = ({ token }) => {
     try {
       const res = await axios.post(
         
-        "http://localhost:4000/api/order/list", // Removed extra space
+        `${backendUrl}/api/order/list`, // Removed extra space
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

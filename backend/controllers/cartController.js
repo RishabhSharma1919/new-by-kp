@@ -69,38 +69,37 @@ export const addToCart = async (req, res) => {
 // UPDATE CART ITEM QUANTITY
 export const updateCart = async (req, res) => {
   try {
-    const userId =  req.user?.id;
-    const {  itemId, size, quantity } = req.body;
+    const userId = req.user?.id;
+    const { itemId, size, quantity } = req.body;
 
     if (!userId || !itemId || !size || quantity < 0) {
-      return res.status(400).json({ success: false, message: "Invalid data" });
+      return res.status(403).json({ success: false, message: "Invalid data" });
     }
 
     const cart = await cartModel.findOne({ userId });
-    
 
-    if (!cart) return res.status(404).json({ success: false, message: "Cart not found" });
+    if (!cart) {
+      return res.status(404).json({ success: false, message: "Cart not found" });
+    }
 
-    const itemIndex = cart.items.findIndex((item) => item.itemId === itemId && item.size === size);
+    const itemIndex = cart.items.findIndex((item) => item._id.toString() === itemId);
 
     if (itemIndex !== -1) {
       if (quantity === 0) {
-        cart.items.splice(itemIndex, 1);
+        cart.items.splice(itemIndex, 1); // Remove item if quantity is 0
       } else {
-        cart.items[itemIndex].quantity = quantity;
+        cart.items[itemIndex].quantity = quantity; // Update quantity
       }
     } else {
       return res.status(400).json({ success: false, message: "Item not found in cart" });
     }
 
-    cart.amount = cart.items.reduce((sum, item) => sum + item.quantity * item.price, 0);
-
     await cart.save();
 
-    res.json({ success: true, message: "Cart updated", cart });
+    return res.status(200).json({ success: true, cart }); // Return updated cart
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error("Error updating cart:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -112,7 +111,7 @@ export const getUserCart = async (req, res) => {
     if (!userId) return res.status(400).json({ success: false, message: "User ID is required" });
 
     const cart = await cartModel.findOne({ userId });
-console.log("======",cart);
+// console.log("======",cart);
 
     if (!cart) return res.status(404).json({ success: false, message: "Cart not found" });
 
