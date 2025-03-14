@@ -3,7 +3,7 @@ import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
-import WishlistButton from "../components/WishlistButton"; // Ensure WishlistButton is imported
+import WishlistButton from "../components/wishlistbutton"; // Ensure WishlistButton is imported
 
 const Wishlist = () => {
   const { products, wishitems } = useContext(ShopContext);
