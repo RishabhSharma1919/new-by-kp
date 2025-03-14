@@ -197,7 +197,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import WishlistButton from "../components/WishlistButton"; 
+import WishlistButton from "../components/wishlistbutton"; 
 
 // ✅ Import CameraPreview Component
 import CameraPreview from "../components/CameraPreview";
