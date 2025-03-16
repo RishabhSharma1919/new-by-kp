@@ -21,12 +21,12 @@ export const placeOrder = async (req, res) => {
         .status(400)
         .json({ success: false, message: "User ID is missing" });
     }
-
-    const { items, itemi,amount, address } = req.body;
-
+//itemi
+    const { items,amount, address } = req.body;
+console.log(req.body);
     const orderData = {
       userId,
-    itemi,
+   // itemi,
       items,
       address,
       amount,
@@ -34,7 +34,7 @@ export const placeOrder = async (req, res) => {
       payment: false,
       date: Date.now(),
     };
-console.log("inside ordercontroller",orderData);
+//console.log("inside ordercontroller",orderData);
     const newOrder = new orderModel(orderData);
     await newOrder.save();
 

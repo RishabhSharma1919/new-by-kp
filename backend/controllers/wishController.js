@@ -87,7 +87,7 @@ export const getuserwishlist = async (req, res) => {
     }
 
     const wishlist = await wishModel.findOne({ userId });
-    console.log("inside getUserWishlist", wishlist);
+   //console.log("inside getUserWishlist", wishlist);
 
     if (!wishlist) {
       return res.status(404).json({ success: false, message: "Wishlist not found" });

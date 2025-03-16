@@ -30,7 +30,7 @@ import jwt from "jsonwebtoken";
 const authUser = async (req, res, next) => {
   try {
     
-    console.log("Auth Header reached here:", req.headers.authorization);
+    //console.log("Auth Header reached here:", req.headers.authorization);
 
     if (!req.headers.authorization || !req.headers.authorization.startsWith("Bearer ")) {
       return res.status(401).json({ success: false, message: "NOT AUTHORIZED, LOGIN AGAIN!" });

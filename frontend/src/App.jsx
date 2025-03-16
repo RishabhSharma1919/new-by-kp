@@ -77,6 +77,10 @@ import Artisitsi from "./pages/Artisitsi";
 import { assets } from "./assets/assets";
 import Wishlist from "./pages/WishList";
 import ShopContextProvider from "./context/ShopContext";
+import Blog from "./pages/Blog";
+import SingleBlog from "./pages/SingleBlog";
+import Razorproducts from "./pages/Razorproducts";
+import BuyNow from "./pages/BuyNow";
 //import ParticleBackground from "./components/ParticleBackground";
 
 const App = () => {
@@ -86,7 +90,6 @@ const App = () => {
   const hideNavFooter = ["/login", "/verify"].includes(location.pathname);
 
   return (
-    <ShopContextProvider>
     <div className="relative min-h-screen">
       {/* Background Image */}
       <div 
@@ -104,17 +107,20 @@ const App = () => {
         {!hideNavFooter && <Navbar />}
         {!hideNavFooter && <SearchBar />}
 
-        <div className="w-full max-w-[100vw] px-2 sm:px-5 md:px-7 lg:px-9 mx-auto">
+        <div className="w-full max-w-[100vw] px-2 sm:px-3 md:px-4 lg:px-9 mx-auto">
         
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/buynow" element={<BuyNow/>}/>
             <Route path="/collection" element={<Collection />} />
+            <Route path="/Razorproducts" element={<Razorproducts/>}/>
             <Route path="/about" element={<About />} />
             <Route path="/artist" element={<Artists />} />
             <Route path="/Artistsi" element={<Artisitsi />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/product/:productId" element={<Product />} />
-
+          <Route path="/blog" element={<Blog/>}/>
+          <Route path="/blog/:blogId" element={<SingleBlog/>}/>
             <Route path="/cart" element={<Cart />} />
             
             <Route path="/login" element={<Login />} />
@@ -131,7 +137,6 @@ const App = () => {
         {!hideNavFooter && <Footer />}
       </div>
     </div>
-    </ShopContextProvider>
   );
 };
 

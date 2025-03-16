@@ -33,7 +33,29 @@ const SideBar = () => {
           <img className="w-5 h-5" src={assets.order_icon} alt="" />
           <p className="hidden md:block">Artists</p> {/* Updated label */}
         </NavLink>
+        <NavLink
+          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-1"
+          to="/create" // Corrected path
+        >
+          <img className="w-5 h-5" src={assets.order_icon} alt="" />
+          <p className="hidden md:block"> createBlog</p> {/* Updated label */}
+        </NavLink>
+        <NavLink
+          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-1"
+          to="/listBlog" // Corrected path
+        >
+          <img className="w-5 h-5" src={assets.order_icon} alt="" />
+          <p className="hidden md:block">ListBlogs</p> {/* Updated label */}
+        </NavLink>
+        <NavLink
+          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-1"
+          to="/update" // Corrected path
+        >
+          <img className="w-5 h-5" src={assets.order_icon} alt="" />
+          <p className="hidden md:block">UpdateBlogs</p> {/* Updated label */}
+        </NavLink>
       </div>
+
     </div>
   );
 };

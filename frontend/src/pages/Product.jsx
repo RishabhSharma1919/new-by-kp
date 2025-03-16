@@ -198,13 +198,14 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import WishlistButton from "../components/WishlistButton"; 
-
+import { useNavigate } from "react-router-dom";
 // ✅ Import CameraPreview Component
 import CameraPreview from "../components/CameraPreview";
+import BuyNow from "./BuyNow";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext);
+  const { products, currency, addToCart,backendUrl ,buynow,setbuyproduct,buyproduct} = useContext(ShopContext);
   const [productData, setProductData] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
   const [description, setDescription] = useState("");
@@ -214,7 +215,24 @@ const Product = () => {
   const [isPincodeValid, setIsPincodeValid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  
+  const navigate = useNavigate(); // Initialize navigate inside the component
+
+
+/*
+const checkoutHandeler=async(amount)=>{
+    console.log(amount);
+    const {data:keyData}=await axios.get("api/payment/getkey");
+    const {key}= keyData
+    console.log(key);
+    const {data:orderData}= await axios.post("/api/payment/process",{amount})
+console.log(orderData);
+    const{order}=orderData;
+    console.log(order);
+}
+*/
+
+
+
   // ✅ Fetch product data from context
   useEffect(() => {
     const selectedProduct = products.find((item) => item._id === productId);
@@ -272,7 +290,7 @@ const Product = () => {
         setUploadedImage(response.data.url);
       }
     } catch (error) {
-      //console.error("Error uploading image:", error);
+      console.error("Error uploading image:", error);
     } finally {
       setUploading(false);
     }
@@ -360,24 +378,49 @@ const Product = () => {
   <CameraPreview paintingSrc={productData.images[0]} />
 </div> */}
 
-            {/* ADD TO CART Button */}
-            {isPincodeValid && (
-              <Button
-                disabled={uploading}
-                onClick={() =>
-                  addToCart({
-                    itemId: productData._id,
-                    size: productData.size,
-                    price: productData.price,
-                    description,
-                    uploadedImage,
-                  })
-                }
-                className="mt-5"
-              >
-                {uploading ? "Uploading Image..." : "ADD TO CART"}
-              </Button>
-            )}
+{isPincodeValid && (
+  <>
+    <Button
+      disabled={uploading}
+      onClick={() =>
+        addToCart({
+          itemId: productData._id,
+          size: productData.size,
+          price: productData.price,
+          description,
+          uploadedImage,
+        })
+      }
+      className="mt-5 mr-4" // Added right margin for spacing
+    >
+      {uploading ? "Uploading Image..." : "ADD TO CART"}
+    </Button>
+
+
+<Button
+  disabled={uploading}
+  onClick={async () => {
+    const newProduct = {
+      itemId: productData._id,
+      price: productData.price,
+      description,
+     image: uploadedImage,
+    };
+    
+    await setbuyproduct(newProduct); // Ensure the state updates
+   // console.log("buyproduct after set:", newProduct);
+    
+    navigate("/buynow");
+    //()=>checkoutHandeler(200) // Navigate after updating state
+  }}
+  className="mt-5"
+>
+  {uploading ? "Uploading Image..." : "BUY NOW"}
+</Button>
+
+  </>
+)}
+
 
             <Separator className="my-8" />
             <Accordion type="single" collapsible>

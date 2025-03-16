@@ -22,6 +22,7 @@ const ShopContextProvider = (props) => {
   const [price, setprice] = useState("");
   const [cartAmount, setCartAmount] = useState(0);
   const [user, setUser] = useState(null);
+  const [buyproduct,setbuyproduct] = useState({});
   const navigate = useNavigate();
 
  
@@ -183,7 +184,45 @@ setWishitems(res.data.wishlist.items);
 
 
   // console.log("Cart Items:", cartItems);
+
+  // const buynow = async (buyproduct) => {
+  //   if (!token) {
+  //     toast.error("Please log in to add items to the cart.");
+  //     return;
+  //   }
+  // //console.log("i am seeing",cartItem);
+  //   try {
+  //     const response = await fetch(`${backendUrl}/api/cart/add`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       body: JSON.stringify(buyproduct),
+  //     });
   
+  //     if (!response.ok) {
+  //       //console.error("Failed to add item:", await response.text());
+  //       toast.error("Failed to add item to cart.");
+  //       return;
+  //     }
+  
+  //     const data = await response.json();
+  //     //console.log("Added to cart:", data);
+  //     toast.success("Item added to cart!");
+  
+  //   } catch (error) {
+  //     //console.error("Failed to add to cart:", error);
+  //     toast.error("Something went wrong. Try again.");
+  //   }
+  // };
+
+
+
+
+
+
+
   const addToCart = async (cartItem) => {
     if (!token) {
       toast.error("Please log in to add items to the cart.");
@@ -322,6 +361,8 @@ setWishitems(res.data.wishlist.items);
     showSearch,
     setShowSearch,
     wishitems,
+    buyproduct,
+    setbuyproduct,
     cartItems,
     addToWishlist,
     wishlist,
@@ -334,6 +375,7 @@ setWishitems(res.data.wishlist.items);
     navigate,
     backendUrl,
     cartAmount,
+    
     token,
     setToken,
     setCartItems,

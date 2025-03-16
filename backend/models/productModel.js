@@ -23,5 +23,3 @@ const productModel = mongoose.models.Product || mongoose.model("Product", produc
 export default productModel;
 
 
-// wanted_length_sizes:{ type: Number},
-// wanted_breadth_sizes:{type: Number}

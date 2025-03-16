@@ -81,11 +81,11 @@ const PlaceOrder = () => {
   
     const orderData = {
       address: formData,
-      itemi:orderItems,
+     // itemi:orderItems,//not needed
       items: cartItems.items,  // Pass directly
       amount: getCartAmount() + delivery_fee,
     };
-  //console.log("from yje place order",orderData);
+  console.log("from yje place order",orderData);
   
     try {
       let orderSuccess = false;
@@ -123,7 +123,24 @@ const PlaceOrder = () => {
           }
           break;
         }
+        // case "razorpay": {
+        //   const responseRazor = await axios.post(
+        //     `${backendUrl}/api/order/razorpay`,
+        //     orderData,
+        //     { headers: { Authorization: `Bearer ${token}` } }
+        //   );
   
+        //   if (responseRazor.data.success) {
+        //     window.location.replace(responseRazor.data.session_url);
+        //     return;
+        //   } else {
+        //     toast.error(responseStripe.data.message);
+        //   }
+        //   break;
+        // }
+      // case"razorpay":{
+      //   const responseRazor = await axios.post(`${backendUrl}/api/payment/process`,{amount}),
+      //  }
         default:
           toast.error("Invalid payment method selected.");
           return;
@@ -184,7 +201,7 @@ const PlaceOrder = () => {
             onChange={onChangeHandler}
             name="lastName"
             value={formData.lastName}
-            required
+            //not required
           />
         </div>
 

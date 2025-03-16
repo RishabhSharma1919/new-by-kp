@@ -19,6 +19,20 @@ const Cart = () => {
     token,
   } = useContext(ShopContext) || {};
 
+//   const checkoutHandeler=async(amount)=>{
+//     console.log(amount);
+//     const {data:keyData}=await axios.get("api/payment/getkey");
+//     const {key}= keyData
+//     console.log(key);
+//     const {data:orderData}= await axios.post("/api/payment/process",{amount})
+// console.log(orderData);
+//     const{order}=orderData;
+//     console.log(order);
+
+
+
+
+
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
@@ -164,6 +178,7 @@ const Cart = () => {
             <CartTotal />
             <button
               className="bg-[#262B2B] text-white w-full py-3 rounded-md text-lg font-semibold mt-6 hover:bg-black transition-all"
+             // onClick={() =>checkoutHandeler(200)}
               onClick={() => navigate("/place-order")}
             >
               PROCEED TO CHECKOUT

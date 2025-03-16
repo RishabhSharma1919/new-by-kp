@@ -37,6 +37,7 @@ const Navbar = () => {
     { to: "/collection", text: "Collection" },
     { to: "/artist", text: "Artists" },
     {to:"/wishlist",text:"WishList"},
+    { to: "/Blog", text: "Our Blogs" },
     { to: "/about", text: "About" },
     { to: "/contact", text: "Contact" },
   ];
@@ -109,13 +110,11 @@ const Navbar = () => {
       >
         Logout
       </DropdownMenuItem>
+     
     </DropdownMenuContent>
   )}
 </DropdownMenu>
-
-
-
-          {/* Cart Icon */}
+  {/* Cart Icon */}
           <Link to="/cart" className="relative">
             <img
               src={assets.cart_icon}
@@ -139,21 +138,23 @@ const Navbar = () => {
               />
             </SheetTrigger>
             <SheetContent side="right" className="w-64 p-4 bg-[#262B2B] text-[#D6D6C7] shadow-lg">
-              <SheetClose asChild>
-                <button className="absolute top-4 right-4 text-white text-xl">❌</button>
-              </SheetClose>
-              <nav className="flex flex-col gap-6 mt-12 text-2xl">
-                {navLinks.map((link) => (
-                  <NavLink 
-                    key={link.to} 
-                    to={link.to} 
-                    className="hover:underline hover:text-white"
-                  >
-                    {link.text}
-                  </NavLink>
-                ))}
-              </nav>
-            </SheetContent>
+  <SheetClose asChild>
+    <button className="absolute top-4 right-4 text-white text-xl">❌</button>
+  </SheetClose>
+  <nav className="flex flex-col gap-6 mt-12 text-2xl">
+    {navLinks.map((link) => (
+      <SheetClose asChild key={link.to}>
+        <NavLink 
+          to={link.to} 
+          className="hover:underline hover:text-white"
+        >
+          {link.text}
+        </NavLink>
+      </SheetClose>
+    ))}
+  </nav>
+</SheetContent>
+
           </Sheet>
         </div>
       </div>

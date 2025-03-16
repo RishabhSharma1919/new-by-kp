@@ -5,9 +5,9 @@ import Title from "../components/Title";
 
 const Contact = () => {
   return (
-    <div className="relative bg-transparent px-6 sm:px-12 py-12">
+    <div className="relative bg-transparent px-6 sm:px-12 py-6">
       {/* Title Section with Larger Font */}
-      <div className="text-center text-4xl md:text-5xl  pt-8 border-t border-gray-300/30">
+      <div className="text-center text-4xl md:text-5xl  pt-8 ">
         <Title text1="CONTACT" text2="US" className="text-5xl md:text-6xl" />
       </div>
 

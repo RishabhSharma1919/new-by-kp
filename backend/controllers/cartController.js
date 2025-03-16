@@ -8,6 +8,66 @@ import userModel from "../models/userModel.js";
 // ADD PRODUCT TO USER CART
 // 
 
+/*export const addtocart = async(req,res)=>{
+  try{
+    const userId = req.user?.id;
+    const { itemId, description, uploadedImage } = req.body;
+
+    if (!userId || !itemId) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+  
+      let cart = await cartModel.findOne({ userId });
+ if (!cart) {
+      cart = new cartModel({
+        userId,
+        items: [],
+        amount: 0,
+        paymentMethod: "pending",
+        date: Date.now(),
+        image: uploadedImage || "hello", // Ensure an empty string if no image is provided
+      });
+    }
+      
+    const itemIndex = cart.items.findIndex(
+      (item) => item.itemId === itemId && item.size === size
+    );
+
+    if (itemIndex !== -1 && uploadedImage==="") {
+      // If the item exists, increase its quantity
+      cart.items[itemIndex].quantity += 1;
+    } else {
+      // Otherwise, add the new item
+      cart.items.push({
+        itemId,
+        size,
+        quantity: 1,
+        price,
+        description,
+        image: uploadedImage || "", // Default to empty string if no image
+      });
+    }
+
+    // Recalculate cart total amount
+    cart.amount = cart.items.reduce((sum, item) => sum + item.quantity * item.price, 0);
+
+    await cart.save();
+
+    return res.status(200).json({ success: true, message: "Added to cart", cart });
+  } catch (error) {
+    console.error("Error in addToCart:", error);
+    return res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+
+  }
+  
+  
+  } */
+
+
+
 
 export const addToCart = async (req, res) => {
   try {

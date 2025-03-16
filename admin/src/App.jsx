@@ -9,6 +9,9 @@ import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CreateBlog from "./pages/CreateBlog";
+import UpdateBlog from "./pages/UpdateBlog";
+import BlogList from "./pages/BlogList";
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export const currency = "$";
@@ -36,6 +39,9 @@ const App = () => {
                 <Route path="/add" element={<Add token={token} />} />
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/order" element={<Order token={token} />} />
+                <Route path="/create" element={<CreateBlog token={token} />} />
+                <Route path="/ListBlog" element={<BlogList token={token} />} />
+                <Route path="/ListBlog/update/:id" element={<UpdateBlog token={token} />} />
                 <Route path="/artist" element={<Artists />} /> {/* Updated route */}
               </Routes>
             </div>

@@ -1,36 +1,27 @@
-
 import mongoose from "mongoose";
-const userSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
 
+const readersSchema = new mongoose.Schema({
+  userId: { 
+    type: String, 
+    required: [false, "User ID is required"], 
+  }, 
+  timestamp: { type: Date, default: Date.now }
 });
 
-const productSchema = new mongoose.Schema({
-    title: { type: String, required: true },
+
+const blogSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true, trim: true },
     description: { type: String, required: true },
-  
-    images: { type: [String], required: true }, // Store images as an array
-    createdAt: {
-        type: Date,
-        default: Date.now,
-      },
-  adminuserId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, unique: true },
+    images: { type: [String], required: true },
+    author: { type: String, default: "", immutable: true },
+    views: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 },
+    readers: { type: [readersSchema], default: [] }, // Changed `userId` to `readers`
+  },
+  { timestamps: true }
+);
 
-      views: {
-        type: Number,
-        default: 0,
-      },
-      likes: {
-        type: Number,
-        default: 0,
-      },  
-      updatedAt: {
-        type: Date,
-        default: Date.now,
-      },
-});
-
-const productModel = mongoose.models.Product || mongoose.model("Product", productSchema);
-export default productModel;
-
-
+// Prevent model re-registration
+const Blog = mongoose.models.Blog || mongoose.model("Blog", blogSchema);
+export default Blog;

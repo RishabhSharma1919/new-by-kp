@@ -13,6 +13,10 @@ import upload from "./middleware/multer.js";
 import uploadrouter from "./routes/uploadRoutes.js";
 import router from "./routes/productRoutes.js";
 import wishRouter from "./routes/wishRoute.js";
+import blogRouter from "./routes/blogRoutes.js";
+import checkoutRouter from "./routes/checkoutRoute.js";
+import Razorpay from "razorpay"
+import paymentrouter from "./routes/paymentRoutes.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
@@ -20,8 +24,17 @@ const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
 
-// ✅ CORS Configuration (Restrict Allowed Origins)
+export const instance = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID, // Ensure this is set
+  key_secret: process.env.RAZORPAY_KEY_SECRET, // Ensure this is set
+})
 
+
+
+
+
+
+// ✅ CORS Configuration (Restrict Allowed Origins)
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "*", // Change "*" to frontend URL in production
@@ -40,15 +53,17 @@ app.use(
 app.use(morgan("dev")); // Logs requests in the console
 app.use(express.json()); // Parse JSON
 app.use(express.urlencoded({ extended: true })); // Parse form data
-
 // ✅ API Routes
 app.use("/api/upload",uploadrouter);
+app.use("/api/checkout",checkoutRouter);
+app.use("/api/payment",paymentrouter)
+
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/wishlist",wishRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
-
+app.use("/api/blog",blogRouter);
 // ✅ Health Check Route
 app.get("/", (req, res) => {
   res.send("🚀 API WORKING");

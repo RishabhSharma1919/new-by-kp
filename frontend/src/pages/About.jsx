@@ -4,12 +4,12 @@ import NewsletterBox from "../components/NewsletterBox";
 
 const About = () => {
   return (
-    <div className="relative bg-transparent px-6 sm:px-12 py-12">
+    <div className="relative bg-transparent px-6 sm:px-12 py-6">
       {/* Background Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30 -z-10"></div>
 
       {/* Title Section with Increased Font Size */}
-      <div className="text-center text-4xl md:text-5xl  pt-8 border-t border-gray-300/30">
+      <div className="text-center text-4xl md:text-5xl  pt-8 ">
         <Title text1="ABOUT" text2="US" className="text-5xl md:text-6xl" />
       </div>
 
