@@ -201,7 +201,6 @@ import { Separator } from "@/components/ui/separator";
 import WishlistButton from "../components/WishlistButton"; 
 import { useNavigate } from "react-router-dom";
 
-import WishlistButton from "../components/wishlistbutton"; 
 
 
 // ✅ Import CameraPreview Component
