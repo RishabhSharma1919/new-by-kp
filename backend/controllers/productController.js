@@ -2,7 +2,7 @@
 
 import { v2 as cloudinary } from "cloudinary";
 import Product from "../models/productModel.js";
-import { uploadImage } from "../upload/cloudinaryUpload.js";
+import { uploadImage } from "../upload/cloudinaryupload.js";
 
 export const addProduct = async (req, res) => {
   try {
