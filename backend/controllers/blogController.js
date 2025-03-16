@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import Blog from "../models/blogModel.js";
-import { uploadImage } from "../upload/cloudinaryupload.js";
+import { uploadImage } from "../upload/cloudinaryUpload.js";
 
 // ✅ Create a Blog
 export const createBlog = async (req, res) => {
