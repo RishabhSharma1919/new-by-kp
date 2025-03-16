@@ -197,8 +197,13 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+<<<<<<< HEAD
 import WishlistButton from "../components/WishlistButton"; 
 import { useNavigate } from "react-router-dom";
+=======
+import WishlistButton from "../components/wishlistbutton"; 
+
+>>>>>>> 906b06f1e51022815bad19a7a4b08fe69e71672a
 // ✅ Import CameraPreview Component
 import CameraPreview from "../components/CameraPreview";
 import BuyNow from "./BuyNow";

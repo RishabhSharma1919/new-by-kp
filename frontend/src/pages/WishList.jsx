@@ -3,7 +3,11 @@ import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
+<<<<<<< HEAD
 import WishlistButton from "../components/wishlistbutton.jsx"; // Ensure WishlistButton is imported
+=======
+import WishlistButton from "../components/wishlistbutton"; // Ensure WishlistButton is imported
+>>>>>>> 906b06f1e51022815bad19a7a4b08fe69e71672a
 
 const Wishlist = () => {
   const { products, wishitems } = useContext(ShopContext);
