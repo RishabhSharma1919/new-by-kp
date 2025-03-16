@@ -16,7 +16,7 @@ const Art4 = () => {
   return (
     <div className="my-10 bg-[#E8E8E3] py-12">
       <div className="text-center text-3xl py-8">
-        <Title text1="CLASSIC" text2="MASTERPIECES" />
+        <Title text1="CLASSIC" text2="MASTERPIECES"/>
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
           Traditional artworks that stand the test of time.
         </p>
