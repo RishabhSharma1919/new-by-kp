@@ -198,7 +198,8 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 
-import WishlistButton from "../components/WishlistButton"; 
+import WishlistButton from "../components/wishlistbutton"; 
+
 import { useNavigate } from "react-router-dom";
 
 
