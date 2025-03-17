@@ -211,7 +211,7 @@ import BuyNow from "./BuyNow";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart,backendUrl ,buynow,setbuyproduct,buyproduct} = useContext(ShopContext);
+  const { products, currency, addToCart,backendUrl ,token,buynow,setbuyproduct,buyproduct} = useContext(ShopContext);
   const [productData, setProductData] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
   const [description, setDescription] = useState("");
