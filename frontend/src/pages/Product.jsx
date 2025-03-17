@@ -201,6 +201,7 @@ import { Separator } from "@/components/ui/separator";
 import WishlistButton from "../components/wishlistbutton"; 
 
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 
@@ -405,23 +406,27 @@ console.log(orderData);
 <Button
   disabled={uploading}
   onClick={async () => {
+    if (!token) {
+      toast.error("You must be logged in to place orders");
+      return;
+    }
+    
     const newProduct = {
       itemId: productData._id,
       price: productData.price,
       description,
-     image: uploadedImage,
+      image: uploadedImage,
     };
-    
+
     await setbuyproduct(newProduct); // Ensure the state updates
-   // console.log("buyproduct after set:", newProduct);
     
     navigate("/buynow");
-    //()=>checkoutHandeler(200) // Navigate after updating state
   }}
   className="mt-5"
 >
   {uploading ? "Uploading Image..." : "BUY NOW"}
 </Button>
+
 
   </>
 )}
