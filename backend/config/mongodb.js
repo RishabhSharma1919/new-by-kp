@@ -2,18 +2,16 @@ import mongoose from "mongoose";
 
 let isConnected = false;
 
+const DEFAULT_MONGODB_URI = "mongodb+srv://sharmarish9826:8vDVvBKXwLxhHdaP@cluster0.emunz.mongodb.net/e-commerce_forever";
+
 const connectDB = async () => {
   if (isConnected || mongoose.connection.readyState >= 1) {
     return;
   }
 
-  if (!process.env.MONGODB_URI) {
-    console.warn("⚠️ [MongoDB] MONGODB_URI environment variable is missing!");
-    return;
-  }
+  const rawUri = (process.env.MONGODB_URI || DEFAULT_MONGODB_URI).trim();
 
   try {
-    const rawUri = process.env.MONGODB_URI.trim();
     const uri = rawUri.endsWith("/")
       ? `${rawUri}e-commerce_forever`
       : rawUri.includes("?") || rawUri.includes("e-commerce")
@@ -25,7 +23,7 @@ const connectDB = async () => {
     });
 
     const db = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 7000,
     });
     isConnected = !!db.connections[0].readyState;
   } catch (err) {

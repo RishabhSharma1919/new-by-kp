@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import uploadIcon from "../assets/upload_area.png";
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp-cykh.vercel.app";
 
 const CreateBlog = ({ token }) => {
   const [loading, setLoading] = useState(false);

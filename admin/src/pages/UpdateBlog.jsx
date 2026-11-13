@@ -10,7 +10,7 @@ const UpdateBlog = () => {
   const [images, setImages] = useState([]); // New images
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp-cykh.vercel.app";
 
   useEffect(() => {
     const fetchBlog = async () => {

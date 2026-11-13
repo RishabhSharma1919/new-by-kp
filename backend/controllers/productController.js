@@ -24,12 +24,12 @@ export const addProduct = async (req, res) => {
     } = req.body;
 
     // Convert string values to boolean
-    bestSeller = bestSeller === "true";
-    art1 = art1 === "true";
-    art2 = art2 === "true";
-    art3 = art3 === "true";
-    art4 = art4 === "true";
-    art5 = art5 === "true";
+    bestSeller = bestSeller === "true" || bestSeller === true;
+    art1 = art1 === "true" || art1 === true;
+    art2 = art2 === "true" || art2 === true;
+    art3 = art3 === "true" || art3 === true;
+    art4 = art4 === "true" || art4 === true;
+    art5 = art5 === "true" || art5 === true;
 
     // Convert numerical values safely
     price = isNaN(parseFloat(price)) ? 0 : parseFloat(price);
@@ -44,12 +44,16 @@ export const addProduct = async (req, res) => {
       .map((key) => req.files?.[key]?.[0]?.buffer)
       .filter(Boolean);
 
+    if (!imageBuffers.length) {
+      return res.status(400).json({ success: false, message: "At least one image must be uploaded." });
+    }
+
     // Upload images to Cloudinary and get URLs
     const imageUrls = await Promise.all(imageBuffers.map(uploadImage));
     console.log("Uploaded Image URLs:", imageUrls);
 
     if (!imageUrls.length) {
-      return res.status(400).json({ error: "At least one image must be uploaded." });
+      return res.status(400).json({ success: false, message: "Failed to upload image(s) to cloud storage." });
     }
 
     // Create and save the new product
@@ -57,8 +61,8 @@ export const addProduct = async (req, res) => {
       name,
       description,
       price,
-      category,
-      subCategory,
+      category: category || "Devotional",
+      subCategory: subCategory || "small A4",
       images: imageUrls, // Store images as an array
       bestSeller,
       art1,
@@ -66,17 +70,16 @@ export const addProduct = async (req, res) => {
       art3,
       art4,
       art5,
-      size,
+      size: size || `${length} x ${breadth}`,
       length,
       breadth,
-      size
     });
 
     await newProduct.save();
-    res.status(201).json({ message: "Product added successfully!", product: newProduct });
+    res.status(201).json({ success: true, message: "Product added successfully!", product: newProduct });
   } catch (error) {
     console.error("Error adding product:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
   }
 };
 

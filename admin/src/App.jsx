@@ -13,7 +13,7 @@ import CreateBlog from "./pages/CreateBlog";
 import UpdateBlog from "./pages/UpdateBlog";
 import BlogList from "./pages/BlogList";
 
-export const backendUrl = import.meta.env.VITE_BACKEND_URL;
+export const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp-cykh.vercel.app";
 export const currency = "$";
 
 const App = () => {

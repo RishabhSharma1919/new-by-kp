@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {  currency } from "../App";
 import { toast } from "react-toastify";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp-cykh.vercel.app";
 
 const List = ({ token }) => {
   const [list, setList] = useState([]);
@@ -82,12 +82,29 @@ const removeProduct = async (id) => {
             <p>{item.size || `${item.length} x ${item.breadth}`}</p>
             <p>{item.bestSeller ? "Yes" : "No"}</p>
             
-            <p>
-              {["art1", "art2", "art3", "art4", "art5"]
-                .filter((art) => item[art])
-                .map((art) => art.toUpperCase())
-                .join(", ") || "N/A"}
-            </p>
+            <div className="flex flex-wrap gap-1">
+              {(() => {
+                const artLabels = {
+                  art1: "Personalised",
+                  art2: "Modern",
+                  art3: "Digital",
+                  art4: "Classic",
+                  art5: "Special",
+                };
+                const active = ["art1", "art2", "art3", "art4", "art5"]
+                  .filter((art) => item[art])
+                  .map((art) => artLabels[art]);
+                return active.length ? (
+                  active.map((label) => (
+                    <span key={label} className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">
+                      {label}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-gray-400 text-xs">Standard</span>
+                );
+              })()}
+            </div>
             
             <p
               onClick={() => removeProduct(item._id)}

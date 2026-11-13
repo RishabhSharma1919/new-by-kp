@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import uploadIcon from "../assets/upload_area.png";
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp-cykh.vercel.app";
 const Add = ({ token }) => {
   const [loading, setLoading] = useState(false);
 
@@ -71,19 +71,33 @@ const Add = ({ token }) => {
         },
       });
 
-      if (response?.data?.success) {
-        toast.success(response.data.message);
+      if (response?.data?.success || response?.status === 200 || response?.status === 201) {
+        toast.success(response?.data?.message || "Product added successfully!");
         reset();
       } else {
         toast.error(response?.data?.message || "Something went wrong");
       }
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred while adding the product.");
+      const errorMsg =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "An error occurred while adding the product.";
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
   };
+
+  const artSections = [
+    { field: "bestSeller", label: "Best Seller", badge: "Home Spotlight", desc: "Highlight in Best Sellers & Home Spotlight" },
+    { field: "art1", label: "Personalised Works", badge: "Painters", desc: "Featured in Personalised Works / Painters category" },
+    { field: "art2", label: "Modern Artworks", badge: "Sculptors", desc: "Featured in Modern Art / Sculptors category" },
+    { field: "art3", label: "Digital Creations", badge: "Photographers", desc: "Featured in Digital Creations / Photographers category" },
+    { field: "art4", label: "Classic Masterpieces", badge: "Designers", desc: "Featured in Classic Masterpieces / Designers category" },
+    { field: "art5", label: "Special Collection", badge: "Illustrators", desc: "Featured in Special Art / Illustrators category" },
+  ];
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)} className="flex flex-col w-full items-start gap-3">
@@ -139,12 +153,29 @@ const Add = ({ token }) => {
         <input className="w-full max-w-[500px] px-3 py-2" type="text" placeholder="Type here" {...register("size")} />
       </div>
 
-      {["bestSeller", "art1", "art2", "art3", "art4", "art5"].map((field) => (
-        <div key={field} className="flex gap-2 mt-2">
-          <input type="checkbox" {...register(field)} />
-          <label>Add to {field}</label>
+      <div className="w-full max-w-[650px] mt-2">
+        <p className="font-semibold text-gray-700 mb-1">Curation & Gallery Collections</p>
+        <p className="text-xs text-gray-500 mb-3">Select which app and web gallery sections this artwork should appear in:</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {artSections.map(({ field, label, badge, desc }) => (
+            <label
+              key={field}
+              className="flex items-start gap-3 p-3 border rounded-lg hover:border-black cursor-pointer transition bg-white"
+            >
+              <input type="checkbox" className="mt-1 w-4 h-4 cursor-pointer" {...register(field)} />
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-sm text-gray-800">{label}</span>
+                  <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">
+                    {badge}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-400 mt-0.5">{desc}</p>
+              </div>
+            </label>
+          ))}
         </div>
-      ))}
+      </div>
 
       <button className="w-28 py-3 mt-4 bg-black text-white disabled:opacity-50" type="submit" disabled={loading}>
         {loading ? "Adding..." : "Add"}
