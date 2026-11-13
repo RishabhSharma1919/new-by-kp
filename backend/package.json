@@ -6,10 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
-    "postinstall": "node patch-buffer.js"
-  },
-  "overrides": {
-    "jwa": "^2.0.1"
+    "postinstall": "node patch-buffer.cjs"
   },
   "engines": {
     "node": "20.x"

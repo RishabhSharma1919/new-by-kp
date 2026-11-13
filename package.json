@@ -3,10 +3,7 @@
     "node": "20.x"
   },
   "scripts": {
-    "postinstall": "node patch-buffer.js"
-  },
-  "overrides": {
-    "jwa": "^2.0.1"
+    "postinstall": "node patch-buffer.cjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
