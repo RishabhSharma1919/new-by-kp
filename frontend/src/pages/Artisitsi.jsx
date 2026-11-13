@@ -16,7 +16,12 @@ const Artisitsi = () => {
     const product = products.find((item) => item._id === productId);
     if (product) {
       setProductData(product);
-      setImage(product.image[0]);
+      const productImages = Array.isArray(product.images) && product.images.length > 0
+        ? product.images
+        : Array.isArray(product.image) && product.image.length > 0
+        ? product.image
+        : ["/default-image.jpg"];
+      setImage(productImages[0]);
     }
   }, [productId, products]);
 
@@ -32,7 +37,7 @@ const Artisitsi = () => {
       <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
           <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:w-[18.7%] w-full">
-            {productData.image.map((item, i) => (
+            {(productData.images || productData.image || []).map((item, i) => (
               <img
                 src={item}
                 key={i}

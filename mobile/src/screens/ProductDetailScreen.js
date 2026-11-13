@@ -22,8 +22,16 @@ export default function ProductDetailScreen({ route, navigation }) {
   const { currency, addToCart, wishlist, toggleWishlist, theme, isDarkMode } = useContext(ShopContext);
 
   const [selectedImage, setSelectedImage] = useState(
-    product.images?.[0] || 'https://via.placeholder.com/600'
+    (Array.isArray(product?.images) && product.images[0]) || product?.image || 'https://via.placeholder.com/600'
   );
+
+  React.useEffect(() => {
+    const defaultImg =
+      (Array.isArray(product?.images) && product.images[0]) ||
+      product?.image ||
+      'https://via.placeholder.com/600';
+    setSelectedImage(defaultImg);
+  }, [product]);
   const [selectedSize, setSelectedSize] = useState(product.size || 'Standard');
   const [customNotes, setCustomNotes] = useState('');
   const [pincode, setPincode] = useState('');
@@ -108,26 +116,33 @@ export default function ProductDetailScreen({ route, navigation }) {
         </View>
 
         {/* Thumbnail Carousel if multiple images */}
-        {product.images && product.images.length > 1 && (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={[styles.thumbnailRow, { backgroundColor: theme.backgroundSecondary }]}
-          >
-            {product.images.map((img, i) => (
-              <TouchableOpacity
-                key={i}
-                onPress={() => setSelectedImage(img)}
-                style={[
-                  styles.thumbnailWrap,
-                  selectedImage === img && { borderColor: theme.accentBone },
-                ]}
-              >
-                <Image source={{ uri: img }} style={styles.thumbnail} />
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        )}
+        {(() => {
+          const productImages = Array.isArray(product?.images) && product.images.length > 0
+            ? product.images.filter(Boolean)
+            : [];
+          if (productImages.length <= 1) return null;
+
+          return (
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={[styles.thumbnailRow, { backgroundColor: theme.backgroundSecondary }]}
+            >
+              {productImages.map((img, i) => (
+                <TouchableOpacity
+                  key={i}
+                  onPress={() => setSelectedImage(img)}
+                  style={[
+                    styles.thumbnailWrap,
+                    selectedImage === img && { borderColor: theme.goldAccent || theme.accentBone, borderWidth: 2 },
+                  ]}
+                >
+                  <Image source={{ uri: img }} style={styles.thumbnail} resizeMode="cover" />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          );
+        })()}
 
         {/* Artwork Header Info */}
         <View style={styles.infoSection}>
