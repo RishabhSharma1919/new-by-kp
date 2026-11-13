@@ -454,7 +454,6 @@ export default function WallPreviewScreen({ route, navigation }) {
             </TouchableOpacity>
           </View>
         )}
-        )}
 
         {/* Scale & Framing Controls */}
         <View style={styles.controlsRow}>
