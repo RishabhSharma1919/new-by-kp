@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Share,
+  RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +18,17 @@ const { width } = Dimensions.get('window');
 const SPOTLIGHT_CARD_WIDTH = width * 0.72;
 
 export default function HomeScreen({ navigation }) {
-  const { products, wishlist, toggleWishlist, theme, isDarkMode } = useContext(ShopContext);
+  const { products, wishlist, toggleWishlist, theme, isDarkMode, fetchProducts } = useContext(ShopContext);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      if (fetchProducts) await fetchProducts();
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   const [likes, setLikes] = useState({
     demo1: 148,
@@ -87,6 +98,13 @@ export default function HomeScreen({ navigation }) {
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.feedContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.goldAccent || theme.primaryText}
+          />
+        }
         ListHeaderComponent={
           <View style={styles.topSectionWrapper}>
             {/* --- SECTION 1: CURATED GALLERY SHOWCASE (PINTEREST / EXHIBITION STYLE) --- */}

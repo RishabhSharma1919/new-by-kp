@@ -7,6 +7,7 @@ const KEYS = {
   WISHLIST: '@artnart_wishlist',
   THEME: '@artnart_dark_mode',
   ORDERS: '@artnart_cached_orders',
+  PRODUCTS: '@artnart_cached_products',
   SAVED_ADDRESS: '@artnart_saved_shipping_address',
 };
 
@@ -100,6 +101,10 @@ export const storage = {
   // Orders
   saveOrders: (orders) => safeSet(KEYS.ORDERS, orders),
   getOrders: () => safeGet(KEYS.ORDERS, []),
+
+  // Products Cache
+  saveProducts: (products) => safeSet(KEYS.PRODUCTS, products),
+  getProducts: () => safeGet(KEYS.PRODUCTS, null),
 
   // Shipping Address
   saveShippingAddress: (address) => safeSet(KEYS.SAVED_ADDRESS, address),

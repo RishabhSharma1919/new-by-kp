@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,12 +27,22 @@ const FILTERS = [
 ];
 
 export default function CollectionScreen({ route, navigation }) {
-  const { products, theme, isDarkMode } = useContext(ShopContext);
+  const { products, theme, isDarkMode, fetchProducts } = useContext(ShopContext);
   const initialFilter = route.params?.categoryFilter || 'all';
 
   const [activeFilter, setActiveFilter] = useState(initialFilter);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('featured'); // 'featured', 'lowToHigh', 'highToLow'
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      if (fetchProducts) await fetchProducts();
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   // Filter & Search Logic
   const filteredProducts = products.filter((item) => {
@@ -137,6 +148,13 @@ export default function CollectionScreen({ route, navigation }) {
         contentContainerStyle={styles.listContent}
         columnWrapperStyle={styles.columnWrapper}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.goldAccent || theme.primaryText}
+          />
+        }
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="color-palette-outline" size={48} color={theme.mutedText} />

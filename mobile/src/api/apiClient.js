@@ -47,8 +47,8 @@ export const ENDPOINTS = {
 export async function apiFetch(endpoint, { method = 'GET', body, headers = {}, token = null, timeout = 7000 } = {}) {
   // Prioritize configured env URL first, followed by Android emulator alias and localhost
   const candidateUrls = [
-    process.env.EXPO_PUBLIC_API_URL,
     "https://new-by-kp.vercel.app",
+    process.env.EXPO_PUBLIC_API_URL,
     "http://10.0.2.2:4000",
     "http://localhost:4000",
   ].filter(Boolean).map((u) => u.replace(/\/+$/, ""));

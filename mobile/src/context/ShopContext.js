@@ -160,10 +160,15 @@ export const ShopContextProvider = ({ children }) => {
           setWishlist(storedWishlist);
         }
 
-        // 3. Orders
+        // 3. Orders & Cached Products
         const storedOrders = await storage.getOrders();
         if (Array.isArray(storedOrders) && storedOrders.length > 0) {
           setOrders(storedOrders);
+        }
+
+        const storedProducts = await storage.getProducts();
+        if (Array.isArray(storedProducts) && storedProducts.length > 0) {
+          setProducts(storedProducts);
         }
 
         // 4. Auth Session
@@ -212,9 +217,10 @@ export const ShopContextProvider = ({ children }) => {
       const res = await apiFetch(ENDPOINTS.LIST_PRODUCTS);
       if (res.ok && res.data?.success && Array.isArray(res.data.products) && res.data.products.length > 0) {
         setProducts(res.data.products);
+        await storage.saveProducts(res.data.products);
       }
     } catch (e) {
-      // Keep sample products as resilient fallback
+      console.warn('[ShopContext] Error fetching products:', e);
     }
   }, []);
 
