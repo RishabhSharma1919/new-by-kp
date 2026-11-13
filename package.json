@@ -2,6 +2,12 @@
   "engines": {
     "node": "20.x"
   },
+  "scripts": {
+    "postinstall": "node patch-buffer.js"
+  },
+  "overrides": {
+    "jwa": "^2.0.1"
+  },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
