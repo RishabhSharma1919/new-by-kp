@@ -9,7 +9,7 @@
     "postinstall": "node patch-buffer.cjs"
   },
   "engines": {
-    "node": "20.x"
+    "node": "26.x"
   },
   "author": "",
   "license": "ISC",
