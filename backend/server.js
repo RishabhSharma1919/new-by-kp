@@ -54,6 +54,26 @@ export const instance = new Razorpay({
   key_secret: razorpayKeySecret,
 });
 
+// ✅ URL Normalization & Global CORS Middleware
+app.use((req, res, next) => {
+  // Normalize double slashes that trigger Vercel CDN 308 redirects
+  if (req.url && req.url.includes("//")) {
+    req.url = req.url.replace(/\/+/g, "/");
+  }
+
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, token, X-Requested-With");
+  }
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // ✅ CORS Configuration (Dynamically reflect origin so credentials work across browser & mobile)
 app.use(
   cors({

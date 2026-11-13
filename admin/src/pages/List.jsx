@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {  currency } from "../App";
 import { toast } from "react-toastify";
-const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp-cykh.vercel.app";
+const backendUrl = (import.meta.env.VITE_BACKEND_URL || "https://new-by-kp.vercel.app").replace(/\/+$/, "");
 
 const List = ({ token }) => {
   const [list, setList] = useState([]);

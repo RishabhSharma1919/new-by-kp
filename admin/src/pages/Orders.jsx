@@ -7,7 +7,7 @@ import { assets } from "../assets/assets";
 
 const Order = ({ token }) => {
   const [orders, setOrders] = useState([]);
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp-cykh.vercel.app";
+  const backendUrl = (import.meta.env.VITE_BACKEND_URL || "https://new-by-kp.vercel.app").replace(/\/+$/, "");
 
   const fetchAllOrders = async () => {
     if (!token) {

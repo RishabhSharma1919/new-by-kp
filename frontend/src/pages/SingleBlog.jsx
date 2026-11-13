@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp-cykh.vercel.app";
+const rawBackendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp.vercel.app";
+const backendUrl = rawBackendUrl.replace(/\/+$/, "");
 
 const SingleBlog = () => {
   const { blogId } = useParams();

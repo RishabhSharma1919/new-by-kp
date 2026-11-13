@@ -8,7 +8,8 @@ export const ShopContext = createContext();
 const ShopContextProvider = (props) => {
   const currency = "$";
   const delivery_fee = 10;
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp-cykh.vercel.app";
+  const rawBackendUrl = import.meta.env.VITE_BACKEND_URL || "https://new-by-kp.vercel.app";
+  const backendUrl = rawBackendUrl.replace(/\/+$/, "");
   //console.log("this the backend url",backendUrl);
   //console.log(import.meta.env);
 
