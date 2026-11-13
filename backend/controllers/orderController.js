@@ -7,7 +7,7 @@ const currency = "usd";
 const deliveryCharges = 10;
 
 //GET WAY INITIALIZE
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder_key");
 
 // PLACING ORDERS USING COD
 export const placeOrder = async (req, res) => {

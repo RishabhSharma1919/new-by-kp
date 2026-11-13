@@ -21,13 +21,27 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 // ✅ Connect to Database and Cloudinary
-connectDB();
-connectCloudinary();
+connectDB().catch((err) => console.warn("MongoDB startup notice:", err.message));
+try {
+  connectCloudinary();
+} catch (err) {
+  console.warn("Cloudinary startup notice:", err.message);
+}
+
+const razorpayKeyId =
+  process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_ID !== "your_key_id"
+    ? process.env.RAZORPAY_KEY_ID
+    : "rzp_test_placeholder";
+
+const razorpayKeySecret =
+  process.env.RAZORPAY_KEY_SECRET && process.env.RAZORPAY_KEY_SECRET !== "your_key_secret"
+    ? process.env.RAZORPAY_KEY_SECRET
+    : "placeholder_secret";
 
 export const instance = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID, // Ensure this is set
-  key_secret: process.env.RAZORPAY_KEY_SECRET, // Ensure this is set
-})
+  key_id: razorpayKeyId,
+  key_secret: razorpayKeySecret,
+});
 
 
 
@@ -75,9 +89,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: "Something went wrong!" });
 });
 
-//✅ Start Server
-app.listen(port, () => {
-  console.log(`🚀 Server started on http://localhost:${port} ❤️`);
-});
+//✅ Start Server (only when running locally, Vercel exports app directly)
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`🚀 Server started on http://localhost:${port} ❤️`);
+  });
+}
 
 export default app; // ✅ Correct export for Vercel

@@ -199,11 +199,10 @@ import userModel from "../models/userModel.js";
 dotenv.config(); // Load environment variables
 
 if (!process.env.RESEND_API_KEY) {
-  console.error("❌ RESEND_API_KEY is missing in .env file!");
-  process.exit(1); // Stop execution
+  console.warn("⚠️ RESEND_API_KEY is not set in environment variables!");
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || "re_placeholder_key");
 
 
 // 🔹 Function to create JWT token

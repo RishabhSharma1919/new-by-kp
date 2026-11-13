@@ -1,8 +1,5 @@
-import { Resend } from "resend";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import validator from "validator";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const userSchema = new mongoose.Schema(
   {
