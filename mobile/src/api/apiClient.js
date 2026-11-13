@@ -1,7 +1,7 @@
 // API Client configuration
 // In React Native / Expo, localhost refers to the phone itself.
-// Use EXPO_PUBLIC_API_URL or Android emulator host alias 10.0.2.2
-export const BASE_URL = process.env.EXPO_PUBLIC_API_URL || "http://10.0.2.2:4000";
+// Use EXPO_PUBLIC_API_URL or production serverless backend
+export const BASE_URL = process.env.EXPO_PUBLIC_API_URL || "https://new-by-kp-cykh.vercel.app";
 
 export const ENDPOINTS = {
   // Auth
@@ -48,6 +48,7 @@ export async function apiFetch(endpoint, { method = 'GET', body, headers = {}, t
   // Prioritize configured env URL first, followed by Android emulator alias and localhost
   const candidateUrls = [
     process.env.EXPO_PUBLIC_API_URL,
+    "https://new-by-kp-cykh.vercel.app",
     "http://10.0.2.2:4000",
     "http://localhost:4000",
   ].filter(Boolean);

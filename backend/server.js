@@ -54,10 +54,10 @@ export const instance = new Razorpay({
   key_secret: razorpayKeySecret,
 });
 
-// ✅ CORS Configuration
+// ✅ CORS Configuration (Dynamically reflect origin so credentials work across browser & mobile)
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "*",
+    origin: (origin, callback) => callback(null, true),
     credentials: true,
   })
 );
