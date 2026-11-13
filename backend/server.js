@@ -75,9 +75,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: "Something went wrong!" });
 });
 
-// ✅ Start Server
-// app.listen(port, () => {
-//   console.log(`🚀 Server started on http://localhost:${port} ❤️`);
-// });
+//✅ Start Server
+app.listen(port, () => {
+  console.log(`🚀 Server started on http://localhost:${port} ❤️`);
+});
 
 export default app; // ✅ Correct export for Vercel

@@ -12,7 +12,10 @@ const Art4 = () => {
   const art4Products = useMemo(() => 
     (products || []).filter(item => item.art4).slice(0, 10),
   [products]);
-
+// const onpress =  ()=>{
+// if(light == dim )setlight(bright);
+// else setlight(dim)
+// }
   return (
     <div className="my-10 bg-[#E8E8E3] py-12">
       <div className="text-center text-3xl py-8">

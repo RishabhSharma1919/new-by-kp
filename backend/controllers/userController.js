@@ -390,7 +390,15 @@ export const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-    res.json({ success: true, token });
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -421,7 +429,7 @@ export const forgotPassword = async (req, res) => {
     await user.save();
 
     await resend.emails.send({
-      from: "your-verified-email@domain.com",
+      from: process.env.EMAIL_FROM || "onboarding@resend.dev",
       to: email,
       subject: "Password Reset Code",
       html: `<p>Your password reset code is <strong>${resetCode}</strong>. It expires in 10 minutes.</p>`,
@@ -485,7 +493,7 @@ export const resetPassword = async (req, res) => {
 export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+console.log("recevied email password ")
     if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
       const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "7d" });
       res.json({ success: true, token });

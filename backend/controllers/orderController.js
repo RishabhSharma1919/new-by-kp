@@ -40,7 +40,7 @@ console.log(req.body);
 
     await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
-    res.json({ success: true, message: "Order Placed" });
+    res.json({ success: true, message: "Order Placed", order: newOrder });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });

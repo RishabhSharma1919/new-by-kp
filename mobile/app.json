@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "Art & Art",
+    "slug": "art-and-art",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "artnart",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1A1D1D"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.artnart.gallery",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Art & Art uses the camera to allow collectors to visualize framed paintings and sculptures in their home rooms.",
+        "NSPhotoLibraryUsageDescription": "Art & Art accesses your gallery so you can upload room photos for the AR Wall Visualizer and submit bespoke commission references."
+      }
+    },
+    "android": {
+      "package": "com.artnart.gallery",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#1A1D1D",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Art & Art to use your camera for live AR wall previews."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Art & Art to access your photo gallery to upload room wall pictures.",
+          "cameraPermission": "Allow Art & Art to capture photos of your room wall."
+        }
+      ]
+    ],
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
